@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { Metadata } from "next";
 
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'photo' | 'video'>('all');
@@ -135,6 +134,6 @@ export default function Gallery() {
           </div>
         </div>
       )}
-    </div>
+      </div>
   );
 }
