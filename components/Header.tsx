@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
+import { usePathname, useRouter } from "next/navigation";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,6 +10,22 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export default function Header() {
   const [showProduk, setShowProduk] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  if (
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname.startsWith("/admin")
+  ) {
+    return null;
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("customerAuth"); // Hapus sesi
+    router.push("/login"); // Kembalikan ke halaman login
+  };
+
   return (
     <Navbar fixed="top" expand="lg" className="navbar-custom">
       <Container fluid className="px-4 px-lg-5">

@@ -15,30 +15,27 @@ export default function AdminLayout({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Cek apakah user sedang berada di halaman login atau register
     const isAuthPage =
       pathname === "/admin/login" || pathname === "/admin/register";
 
-    // Cek status login dari localStorage
-    const loggedStatus = localStorage.getItem("admin_logged_in");
+    const loggedStatus = localStorage.getItem("adminAuth");
 
     if (loggedStatus === "true") {
       setIsLoggedIn(true);
     } else if (!isAuthPage) {
-      // Jika belum login dan bukan di halaman auth, lempar ke halaman login
-      router.push("/admin/login");
+      router.replace("/admin/login");
+      return;
     }
 
     setIsLoading(false);
   }, [pathname, router]);
 
   const handleLogout = () => {
-    localStorage.removeItem("admin_logged_in");
+    localStorage.removeItem("adminAuth");
     setIsLoggedIn(false);
-    router.push("/admin/login");
+    router.replace("/admin/login");
   };
 
-  // Jika sedang di halaman login atau register, tampilkan halamannya saja tanpa Sidebar & Navbar admin
   if (pathname === "/admin/login" || pathname === "/admin/register") {
     return <>{children}</>;
   }
@@ -47,15 +44,16 @@ export default function AdminLayout({
     return <div className="text-center p-5">Memuat...</div>;
   }
 
+  if (!isLoggedIn) {
+    return null;
+  }
+
   return (
     <div
-      className="d-flex"
-      style={{ minHeight: "100vh", backgroundColor: "#f4f6f9" }}
+      className="d-flex admin-wrapper"
     >
-      {/* SIDEBAR (Kiri) */}
       <div
-        className="bg-dark text-white p-3 d-flex flex-column justify-content-between"
-        style={{ width: "250px" }}
+        className="admin-sidebar bg-dark text-white p-3 d-flex flex-column justify-content-between"
       >
         <div>
           <h4 className="text-center py-3 border-bottom text-white fw-bold">
@@ -63,7 +61,7 @@ export default function AdminLayout({
           </h4>
           <Nav className="flex-column mt-3">
             <Nav.Link href="/admin" className="text-white mb-2">
-              📊 Dashboard v2
+              📊 Dashboard
             </Nav.Link>
             <Nav.Link href="/admin/products/add" className="text-white mb-2">
               ➕ Tambah Produk
@@ -86,7 +84,6 @@ export default function AdminLayout({
         </div>
       </div>
 
-      {/* AREA KONTEN UTAMA (Kanan) */}
       <div className="flex-grow-1">
         <Navbar bg="white" expand="lg" className="border-bottom px-4 shadow-sm">
           <Navbar.Brand href="/admin" className="fw-bold text-secondary">

@@ -1,117 +1,92 @@
 "use client";
-
-import { useState } from "react";
-import { Card, Form, Button, Row, Col } from "react-bootstrap";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AddProductPage() {
   const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState("Ikan Segar");
+  const [category, setCategory] = useState("Ikan Air Asin");
   const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [description, setDescription] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Produk "${productName}" berhasil ditambahkan ke katalog UMKM!`);
+
+    // Validasi pengaman kategori
+    if (category !== "Ikan Air Asin" && category !== "Ikan Air Tawar") {
+      alert(
+        "Kategori produk hanya diizinkan untuk Ikan Air Asin atau Ikan Air Tawar!",
+      );
+      return;
+    }
+
+    // Logika simpan produk ke database/state Anda
+    console.log({ productName, category, price });
+    alert("Produk berhasil ditambahkan!");
     router.push("/admin");
   };
 
   return (
-    <div>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h3 className="fw-bold">Tambah Produk Baru</h3>
-        <Button variant="outline-secondary" size="sm" href="/admin">
-          ← Kembali ke Dashboard
-        </Button>
+    <div
+      className="container py-5"
+      style={{ marginTop: "80px", maxWidth: "650px" }}
+    >
+      <div
+        className="card p-4 shadow"
+        style={{
+          background: "var(--navy-900)",
+          color: "var(--biru-muda)",
+          borderRadius: "20px",
+        }}
+      >
+        <h2
+          className="mb-4 text-center"
+          style={{ color: "var(--kuning)", fontFamily: "HYWenHei" }}
+        >
+          Tambah Produk Pasar Ikan
+        </h2>
+        <form onSubmit={handleAddProduct}>
+          <div className="mb-3">
+            <label className="form-label">Nama Ikan / Produk</label>
+            <input
+              type="text"
+              className="form-control"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              placeholder="Contoh: Ikan Kakap / Ikan Gurame"
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Kategori Produk</label>
+            <select
+              className="form-select"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="Ikan Air Asin">Ikan Air Asin</option>
+              <option value="Ikan Air Tawar">Ikan Air Tawar</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Harga (Rp)</label>
+            <input
+              type="number"
+              className="form-control"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Contoh: 45000"
+              required
+            />
+          </div>
+
+          <button type="submit" className="button w-100">
+            Simpan Produk
+          </button>
+        </form>
       </div>
-
-      <Card className="shadow-sm border-0">
-        <Card.Body className="p-4">
-          <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col md={8}>
-                <Form.Group className="mb-3" controlId="productName">
-                  <Form.Label className="fw-semibold">Nama Produk</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Contoh: Ikan Tuna Segar Muara Baru"
-                    value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="category">
-                  <Form.Label className="fw-semibold">Kategori</Form.Label>
-                  <Form.Select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    <option value="Ikan Segar">Ikan Segar</option>
-                    <option value="Udang & Kerang">Udang & Kerang</option>
-                    <option value="Cumi & Sotong">Cumi & Sotong</option>
-                    <option value="Olahan Ikan">Olahan Ikan</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="price">
-                  <Form.Label className="fw-semibold">Harga (Rp)</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Contoh: 45000"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="stock">
-                  <Form.Label className="fw-semibold">
-                    Stok (Kg / Porsi)
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Contoh: 100"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Form.Group className="mb-4" controlId="description">
-              <Form.Label className="fw-semibold">Deskripsi Produk</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={4}
-                placeholder="Tuliskan deskripsi singkat mengenai kesegaran atau asal produk..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </Form.Group>
-
-            <div className="d-flex justify-content-end gap-2">
-              <Button variant="secondary" href="/admin">
-                Batal
-              </Button>
-              <Button variant="success" type="submit">
-                Simpan Produk
-              </Button>
-            </div>
-          </Form>
-        </Card.Body>
-      </Card>
     </div>
   );
 }

@@ -9,7 +9,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e: React.SubmitEvent) => {
     e.preventDefault();
     // Simulasi login sukses langsung diarahkan ke Dashboard Admin
     alert(`Selamat datang kembali, ${email}!`);

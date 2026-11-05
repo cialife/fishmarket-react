@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
+import AuthGuard from "@/components/AuthGuard";
 
 export const metadata: Metadata = {
   title: "Muara Baru",
@@ -24,9 +25,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <AuthGuard>
+          <Header />
+          {children}
+          <Footer />
+        </AuthGuard>
       </body>
     </html>
   );
