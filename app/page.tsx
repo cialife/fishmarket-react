@@ -7,19 +7,17 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Muara Baru | Beranda",
-};
-
 const image = [
-  { src: "/images/pasar.jpg", alt: "Pasar" },
-  { src: "/images/home1.jpg", alt: "Dalam Pasar" },
-  { src: "/images/home2.jpg", alt: "Pasar" },
-  { src: "/images/home3.jpg", alt: "Dalam Pasar" },
+  { src: "/images/home/pasar.jpg", alt: "Pasar" },
+  { src: "/images/home/home1.jpg", alt: "Dalam Pasar" },
+  { src: "/images/home/home2.jpg", alt: "Pasar" },
+  { src: "/images/home/home3.jpg", alt: "Dalam Pasar" },
 ];
+
 export default function HomePage() {
   return (
     <>
+      <title>Beranda | Muara Baru</title>
       <Hero
         videoSrc="/videos/home.mp4"
         title="Pasar Ikan Modern Muara Baru"
@@ -40,7 +38,7 @@ export default function HomePage() {
                   Siap untuk mencobanya? Jelajahi tangkapan harian kami yang
                   dipilih secara cermat demi kualitas dan kesegarannya.
                 </p>
-                <Button href="/about">
+                <Button href="/about" className="primary">
                   Jelajahi <i className="fa-solid fa-arrow-right-long"></i>
                 </Button>
               </div>

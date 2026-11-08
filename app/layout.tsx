@@ -6,11 +6,6 @@ import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import AuthGuard from "@/components/AuthGuard";
 
-export const metadata: Metadata = {
-  title: "Muara Baru",
-  description: "Pasar Ikan Modern Muara Baru",
-};
-
 export default function RootLayout({
   children,
 }: {

@@ -1,19 +1,18 @@
 "use client";
 
+import Hero from "@/components/Hero";
+import Title from "@/components/Title";
 import React, { useState } from "react";
-// Import data dan type dari file dataGallery.tsx
+import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import { galleryData, GalleryItem } from "@/app/data/dataGallery";
+import GalleryCard from "@/components/GalleryCard"; // Diperbarui agar sesuai dengan alias path root
 
 export default function Gallery() {
   const [filter, setFilter] = useState<"all" | "photo" | "video">("all");
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
-  const closeLightbox = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setLightboxItem(null);
-  };
+  const handleClose = () => setLightboxItem(null);
 
-  // Filter data berdasarkan state 'filter'
   const filteredData = galleryData.filter((item) => {
     if (filter === "all") return true;
     return item.type === filter;
@@ -21,123 +20,82 @@ export default function Gallery() {
 
   return (
     <>
-      <section className="hero">
-        <div className="head-video">
-          <video controls autoPlay loop muted>
-            <source src="/videos/gallery.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div className="hero-text">
-          <h1>Gallery Pasar Ikan Modern Muara Baru</h1>
-          <a href="#content" className="button">
-            See more <i className="fa-solid fa-circle-arrow-down"></i>
-          </a>
-        </div>
-      </section>
+      <Hero
+        videoSrc="/videos/gallery.mp4"
+        title="Galeri Pasar Ikan Modern Muara Baru"
+        sub="Apa saja yang dilakukan di Pasar?"
+        buttonText="Lihat Galeri"
+        buttonLink="content"
+      />
 
-      <div className="container-gallery">
-        <div className="title" id="content">
-          <h2>The Gallery Of The Best Fish Market</h2>
-          <p>Take a glimpse on the freshness of the sea.</p>
-        </div>
+      <Container className="my-5" id="content">
+        <Title
+          title="Momen yang Terdokumentasi"
+          sub="Keseharian para nelayan lokal dan suasana Pasar Ikan Modern Muara Baru"
+        />
 
         <div className="pure-css-gallery">
-          {/* Filter Buttons disesuaikan dengan useState */}
-          <div className="gallery-filter">
-            <button
-              className={`filter-btn ${filter === "all" ? "active-filter" : ""}`}
+          <div className="gallery-filter d-flex justify-content-center gap-3 mb-4">
+            <Button
+              variant={filter === "all" ? "warning" : "light"}
+              className={`filter-btn rounded-pill px-4 ${filter === "all" ? "active-filter fw-bold" : "text-primary"}`}
               onClick={() => setFilter("all")}
             >
-              All
-            </button>
-            <button
-              className={`filter-btn ${filter === "photo" ? "active-filter" : ""}`}
+              Semua
+            </Button>
+            <Button
+              variant={filter === "photo" ? "warning" : "light"}
+              className={`filter-btn rounded-pill px-4 ${filter === "photo" ? "active-filter fw-bold" : "text-primary"}`}
               onClick={() => setFilter("photo")}
             >
-              Photo
-            </button>
-            <button
-              className={`filter-btn ${filter === "video" ? "active-filter" : ""}`}
+              Foto
+            </Button>
+            <Button
+              variant={filter === "video" ? "warning" : "light"}
+              className={`filter-btn rounded-pill px-4 ${filter === "video" ? "active-filter fw-bold" : "text-primary"}`}
               onClick={() => setFilter("video")}
             >
               Video
-            </button>
+            </Button>
           </div>
 
-          <div className="gallery-grid">
+          <Row className="g-4">
             {filteredData.map((item) => (
-              <a
-                key={item.id}
-                href={`#img${item.id}`}
-                className={`gallery-item item-${item.type}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLightboxItem(item);
-                }}
-              >
-                <div className="image-wrapper">
-                  {item.type === "photo" ? (
-                    <img src={item.src} alt={item.title} />
-                  ) : (
-                    <iframe
-                      src={item.previewSrc}
-                      title={item.title}
-                      frameBorder="0"
-                      allow="autoplay; encrypted-media"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        pointerEvents: "none",
-                        border: 0,
-                      }}
-                    ></iframe>
-                  )}
-
-                  <span className="zoom-badge">
-                    {item.type === "photo" ? (
-                      <i className="fa-solid fa-magnifying-glass"></i>
-                    ) : (
-                      " See It in Action"
-                    )}
-                  </span>
-                </div>
-                <div className="card-caption">
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
-                </div>
-              </a>
+              <Col xs={12} md={6} lg={4} key={item.id}>
+                <GalleryCard 
+                  item={item} 
+                  onSelect={(selected: GalleryItem) => setLightboxItem(selected)} 
+                />
+              </Col>
             ))}
-          </div>
+          </Row>
 
-          {/* Lightbox */}
-          {lightboxItem && (
-            <div
-              className="lightbox"
-              style={{ opacity: 1, pointerEvents: "auto" }}
-            >
-              <a href="#" className="close-btn" onClick={closeLightbox}>
-                &times;
-              </a>
-              <div className="lightbox-content">
-                {lightboxItem.type === "photo" ? (
-                  <img src={lightboxItem.src} alt={lightboxItem.title} />
-                ) : (
+          <Modal show={lightboxItem !== null} onHide={handleClose} centered size="lg">
+            <Modal.Header closeButton className="border-0 bg-dark text-white">
+              <Modal.Title>{lightboxItem?.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="bg-dark text-center p-0">
+              {lightboxItem?.type === "photo" ? (
+                <img
+                  src={lightboxItem.src}
+                  alt={lightboxItem.title}
+                  className="img-fluid w-100 image-contain"
+                  style={{ maxHeight: "80vh" }}
+                />
+              ) : (
+                <div className="ratio ratio-16x9">
                   <iframe
-                    width="560"
-                    height="315"
-                    src={lightboxItem.src}
-                    title={lightboxItem.title}
-                    frameBorder="0"
+                    src={lightboxItem?.src}
+                    title={lightboxItem?.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
-                    style={{ border: 0, borderRadius: "8px", maxWidth: "100%" }}
                   ></iframe>
-                )}
-              </div>
-            </div>
-          )}
+                </div>
+              )}
+            </Modal.Body>
+          </Modal>
         </div>
-      </div>
+      </Container>
     </>
   );
 }

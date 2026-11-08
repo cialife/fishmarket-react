@@ -1,16 +1,22 @@
 import Link from 'next/link';
+import { ButtonHTMLAttributes } from 'react';
 
-type ButtonProps = {
-  children: React.ReactNode; // Isi dari tombol (teks atau icon)
-  href?: string;             // Jika ada, tombol akan menjadi Link
-  onClick?: () => void;      // Jika ada, tombol akan menjalankan fungsi saat diklik
-  className?: string;        // Tambahan class CSS jika diperlukan
-  type?: "button" | "submit" | "reset"; // Berguna untuk form order nanti
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  children: React.ReactNode;
+  href?: string;
+  className?: string;
 }
 
-export default function Button({ children, href, onClick, className = "", type = "button" }: ButtonProps) {
+export default function Button({ 
+  children, 
+  href, 
+  className = "", 
+  type = "button", 
+  disabled,
+  onClick,
+  ...restProps
+}: ButtonProps) {
   
-  // Menggabungkan class bawaan ".button" dari globals.css dengan class tambahan
   const customClass = `button ${className}`.trim();
 
   // 1. Jika tombol memiliki 'href', maka jadikan dia sebagai <Link> Next.js
@@ -24,7 +30,13 @@ export default function Button({ children, href, onClick, className = "", type =
 
   // 2. Jika tidak ada 'href', maka jadikan dia <button> HTML biasa
   return (
-    <button type={type} onClick={onClick} className={customClass}>
+    <button 
+      type={type} 
+      onClick={onClick} 
+      disabled={disabled} 
+      className={customClass} 
+      {...restProps} // Menyebarkan atribut tambahan (seperti disabled, aria-*, dll)
+    >
       {children}
     </button>
   );

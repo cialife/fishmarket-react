@@ -52,7 +52,7 @@ body {
   flex-direction: column;
   color: var(--foreground);
   background: var(--bayangan);
-  font-family: Arial, Helvetica, sans-serif;
+ 
   background: var(--grad-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -166,20 +166,20 @@ p, a {
   font-family: HYWenHei;
 }
 
-.button {
-  margin-top: 8px;
-  background: var(--grad-navy-kiri);
-  padding: 10px;
-  border: transparent;
-  border-radius: 10px;
-  text-decoration: none;
-  font-family: HYWenHei;
-  color: var(--kuning);
+.primary {
+  margin-top: 8px !important;
+  background: var(--grad-navy-kiri) !important;
+  padding: 10px !important;
+  border: transparent !important;
+  border-radius: 10px !important;
+  text-decoration: none !important;
+  font-family: HYWenHei !important;
+  color: var(--kuning) !important;
 }
 
-.button:hover {
-  background: var(--kuning);
-  color: var(--navy-900);
+.primary:hover {
+  background: var(--kuning) !important;
+  color: var(--navy-900) !important;
 }
 
 .title {
@@ -251,7 +251,7 @@ p, a {
   transform: scale(1.2);
 }
 
-.container-about {
+.container-about, .container-catalog {
   margin: 0 auto;
   max-width: 1050px;
 }
@@ -380,11 +380,11 @@ footer a {
 
 /* --- PAKSA GRID 3 KOLOM --- */
 .pure-css-gallery {
-    max-width: 1200px !important;
-    width: 100% !important;
-    margin: 40px auto 120px !important;
-    padding: 0 20px !important;
-    box-sizing: border-box !important;
+  max-width: 1200px !important;
+  width: 100% !important;
+  margin: 40px auto 120px !important;
+  padding: 0 20px !important;
+  box-sizing: border-box !important;
 }
 
 .gallery-grid {
@@ -396,7 +396,7 @@ footer a {
 
 /* Memastikan kartu tidak berantakan ukurannya */
 .gallery-item {
-    text-decoration: none !important;
+  text-decoration: none !important;
     display: flex !important;
     flex-direction: column !important;
     transition: transform 0.3s ease !important;
@@ -486,69 +486,69 @@ footer a {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    z-index: 99999 !important; /* Pastikan selalu berada paling depan */
+  z-index: 99999 !important; /* Pastikan selalu berada paling depan */
 }
 
 .lightbox-content {
-    max-width: 85% !important;
-    max-height: 80vh !important;
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8) !important;
+  max-width: 85% !important;
+  max-height: 80vh !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8) !important;
 }
 
 .lightbox-content img, .lightbox-content iframe {
-    width: 100% !important;
-    max-height: 80vh !important;
-    object-fit: contain !important;
-    display: block !important;
+  width: 100% !important;
+  max-height: 80vh !important;
+  object-fit: contain !important;
+  display: block !important;
 }
 
 .close-btn {
-    position: absolute !important;
-    top: 25px !important;
-    right: 35px !important;
-    color: #fff !important;
-    font-size: 40px !important;
-    text-decoration: none !important;
-    font-weight: bold !important;
-    z-index: 100000 !important;
-    cursor: pointer !important;
+  position: absolute !important;
+  top: 25px !important;
+  right: 35px !important;
+  color: #fff !important;
+  font-size: 40px !important;
+  text-decoration: none !important;
+  font-weight: bold !important;
+  z-index: 100000 !important;
+  cursor: pointer !important;
 }
 
 .close-btn:hover {
-    color: rgb(248, 255, 116) !important;
+  color: rgb(248, 255, 116) !important;
 }
 
 /* Styling Badge Kaca Pembesar (Zoom Badge) */
 .zoom-badge {
-    position: absolute !important;
-    top: 15px !important;
-    right: 15px !important;
-    width: 40px !important;
-    height: 40px !important;
-    background: rgba(11, 19, 43, 0.9) !important; /* Warna latar gelap kebiruan */
-    color: rgb(248, 255, 116) !important;        /* Warna ikon kuning */
-    border-radius: 50% !important;               /* Membuatnya jadi lingkaran penuh */
-    backdrop-filter: blur(4px) !important;
-    opacity: 0 !important;                       /* Tersembunyi secara default */
-    transition: opacity 0.3s ease, transform 0.3s ease !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;          /* Posisi ikon tepat di tengah lingkaran */
-    z-index: 2 !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+  position: absolute !important;
+  top: 15px !important;
+  right: 15px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background: rgba(11, 19, 43, 0.9) !important; /* Warna latar gelap kebiruan */
+  color: rgb(248, 255, 116) !important;        /* Warna ikon kuning */
+  border-radius: 50% !important;               /* Membuatnya jadi lingkaran penuh */
+  backdrop-filter: blur(4px) !important;
+  opacity: 0 !important;                       /* Tersembunyi secara default */
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;          /* Posisi ikon tepat di tengah lingkaran */
+  z-index: 2 !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Memunculkan badge saat kartu galeri di-hover */
 .gallery-item:hover .zoom-badge {
-    opacity: 1 !important;
+  opacity: 1 !important;
 }
 
 /* Ukuran ikon kaca pembesar di dalamnya */
 .zoom-badge i {
-    font-size: 16px !important;
-    color: rgb(248, 255, 116) !important;       /* Memastikan ikon berwarna kuning */
+  font-size: 16px !important;
+  color: rgb(248, 255, 116) !important;       /* Memastikan ikon berwarna kuning */
 }
 
 .admin-wrapper {
@@ -675,4 +675,188 @@ footer a {
 
 .admin-dashboard-container .card:hover {
   transform: translateY(-3px);
+}
+
+.product-card img{
+  border-bottom: 1px solid rgba(27, 45, 94, 0.8);
+  height: 250px;
+  object-fit: cover;
+}
+
+.product-name {
+  font-family: HYWenhei;
+  color: rgb(10, 19, 49);
+}
+
+.product-price {
+  color: rgb(19, 40, 109);
+}
+
+.roman {
+  font-family: HYWenHei;
+}
+
+.lost-fish {
+  font-family: LostFish;
+}
+
+.arial {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.price-table-wrap {
+  max-width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(27, 45, 94, 0.15);
+}
+
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-weight: 600;
+}
+
+.price-table th, .price-table td {
+  padding: 12px 8px;
+  font-size: 0.9rem;
+  border: 1px solid #999;
+}
+
+.price-table thead th {
+  background: linear-gradient(135deg, #1b2d5e, #0d1633);
+  color: #fff;
+}
+
+.price-table tbody th {
+  background: linear-gradient(180deg, #fff, #bfe6ff);
+  color: #1b2d5e;
+}
+
+.price-table tbody td {
+  background: #fff;
+  color: #444;
+}
+.price-table tbody tr:nth-child(odd) td {
+  background: #e8ecff;
+}
+
+.price-table tbody tr td.kategori-cell {
+  background: linear-gradient(180deg, #fff, #bfe6ff);
+  color: #1b2d5e;
+  vertical-align: middle;
+}
+
+@media (min-width: 992px) {
+  .price-sticky {
+    position: sticky;
+    top: 20px;
+  }
+}
+
+.price-table tbody tr:hover td, .price-table tbody tr:hover th {
+  background: #e8ffff !important;
+}
+
+.price-table tbody tr:hover td.kategori-cell {
+  background: linear-gradient(180deg, #fff, #bfe6ff) !important;
+}
+
+.qty-box {
+  border: 1px solid rgba(88, 101, 135, 0.8);
+  padding: 8px;
+  width: 100%;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.add-btn {
+  padding: 12px 20px !important;
+}
+
+.product-card:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.modal-body {
+  background: linear-gradient(to bottom, rgb(230, 243, 255), rgb(255, 253, 236));
+}
+
+.modal-title {
+  color: rgb(10, 19, 49);
+}
+
+.min-btn {
+  color: rgb(173, 0, 66) !important;
+  border: 1px solid rgb(173, 0, 66) !important;
+  background: white !important;
+}
+
+.min-btn:hover {
+  background: rgb(255, 206, 214) !important;
+  color: rgb(173, 0, 66) !important;
+}
+
+@media print {
+  nav,
+  .navbar,
+  .no-print,
+  footer {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    padding: 0 !important;
+  }
+}
+
+/* Styling Badge Kaca Pembesar (Zoom Badge) */
+.zoom-badge {
+  position: absolute !important;
+  top: 15px !important;
+  right: 15px !important;
+  width: 42px !important;
+  height: 42px !important;
+  background: rgba(11, 19, 43, 0.85) !important; /* Warna latar gelap kebiruan */
+  border-radius: 50% !important;               /* Membuatnya jadi lingkaran penuh */
+  backdrop-filter: blur(4px) !important;
+  opacity: 0 !important;                       /* Tersembunyi secara default */
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;          /* Posisi ikon tepat di tengah lingkaran */
+  z-index: 2 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+  cursor: pointer !important;
+}
+
+/* Memunculkan badge saat kartu galeri di-hover */
+.gallery-card-item:hover .zoom-badge {
+  opacity: 1 !important;
+}
+
+/* Mengubah warna latar/ikon menjadi kuning saat di-hover */
+.zoom-badge:hover {
+  background-color: rgb(248, 255, 116) !important; /* Kuning menyala */
+  border-color: rgb(248, 255, 116) !important;
+  transform: scale(1.1);
+}
+
+/* Mengatur gambar ikon kaca pembesar di dalamnya */
+.zoom-icon-img {
+  width: 15px !important;
+  height: 15px !important;
+  max-width: 17px !important;
+  max-height: 17px !important;
+  object-fit: contain !important;
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+
+.zoom-badge:hover .zoom-icon-img {
+  filter: brightness(0); 
 }

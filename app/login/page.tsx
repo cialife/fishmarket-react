@@ -59,7 +59,7 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="login-button button w-100 mb-3 text-center"
+            className="login-button button w-100 mb-3 text-center primary"
           >
             Masuk
           </button>

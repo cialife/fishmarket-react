@@ -1,5 +1,4 @@
 "use client";
-
 import Button from './Button';
 
 type HeroProps = {
@@ -24,7 +23,7 @@ export default function Hero({videoSrc, title ="Title", sub = "Sub", buttonText 
             <div className="hero-text position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center px-3">
                 <h1>{title}</h1>
                 <h3>{sub}</h3>
-                <Button onClick={scrollKeBawah}>
+                <Button onClick={scrollKeBawah} className="primary">
                     {buttonText} <i className="fa-solid fa-circle-arrow-down"></i>
                 </Button>
             </div>
