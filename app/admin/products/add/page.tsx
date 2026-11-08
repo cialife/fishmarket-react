@@ -41,7 +41,7 @@ export default function AddProduct() {
       kategori: formData.kategori,
       harga: Number(formData.harga),
       desc: formData.desc,
-      src: image64 || "/images/product/default.jpg",
+      src: image64 || "/images/product/default.png",
     };
     saveProduk([...currentProducts, newProduct]);
     alert(`Produk ${formData.nama} berhasil ditambahkan!`);
