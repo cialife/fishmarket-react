@@ -1,8 +1,8 @@
 "use client";
-
-import { Nav, Navbar, Button } from "react-bootstrap";
+import { Nav, Navbar, Button as BootstrapButton, Modal } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function AdminLayout({
   children,
@@ -13,86 +13,123 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const isAuthPage =
       pathname === "/admin/login" || pathname === "/admin/register";
-
-    const loggedStatus = localStorage.getItem("adminAuth");
-
+    const loggedStatus = sessionStorage.getItem("adminAuth");
     if (loggedStatus === "true") {
       setIsLoggedIn(true);
     } else if (!isAuthPage) {
       router.replace("/admin/login");
       return;
     }
-
     setIsLoading(false);
   }, [pathname, router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminAuth");
+  const handleLogoutConfirm = () => {
+    sessionStorage.removeItem("adminAuth");
     setIsLoggedIn(false);
+    setShowModal(false);
     router.replace("/admin/login");
   };
 
   if (pathname === "/admin/login" || pathname === "/admin/register") {
     return <>{children}</>;
   }
-
-  if (isLoading) {
-    return <div className="text-center p-5">Memuat...</div>;
-  }
-
-  if (!isLoggedIn) {
-    return null;
-  }
+  if (isLoading) return <div className="text-center p-5">Memuat...</div>;
+  if (!isLoggedIn) return null;
 
   return (
-    <div
-      className="d-flex admin-wrapper"
-    >
-      <div
-        className="admin-sidebar bg-dark text-white p-3 d-flex flex-column justify-content-between"
-      >
-        <div>
-          <h4 className="text-center py-3 border-bottom text-white fw-bold">
-            Admin Panel
+    <div className="d-flex admin-wrapper">
+      <div className="col-md-2 p-0 shadow-sm d-flex flex-column admin-sidebar-custom">
+        <div className="p-4 text-center border-bottom border-secondary">
+          <h4 className="admin-brand-logo lost-fish mb-0 fs-5 text-nowrap">
+            <i className="fa-solid fa-fish me-1"></i> Muara Baru
           </h4>
-          <Nav className="flex-column mt-3">
-            <Nav.Link href="/admin" className="text-white mb-2">
-              📊 Dashboard
-            </Nav.Link>
-            <Nav.Link href="/admin/products/add" className="text-white mb-2">
-              ➕ Tambah Produk
-            </Nav.Link>
-          </Nav>
+          <small className="text-white-50 roman">Admin Panel</small>
         </div>
 
-        <div>
-          <Nav.Link href="/" className="text-warning mb-3">
-            ← Kembali ke Website
-          </Nav.Link>
-          <Button
-            variant="outline-light"
-            size="sm"
-            className="w-100"
-            onClick={handleLogout}
+        <Nav className="flex-column mt-3 px-3 flex-grow-1">
+          <Nav.Link
+            as={Link}
+            href="/admin"
+            className={`mb-2 rounded sidebar-link-text ${pathname === "/admin" ? "active" : ""}`}
           >
-            Keluar (Logout)
-          </Button>
+            <i className="fa-solid fa-chart-pie me-2"></i> Dashboard
+          </Nav.Link>
+          <Nav.Link
+            as={Link}
+            href="/admin/products/add"
+            className={`mb-2 rounded sidebar-link-text ${pathname === "/admin/products/add" ? "active" : ""}`}
+          >
+            <i className="fa-solid fa-plus me-2"></i> Tambah Produk
+          </Nav.Link>
+          <Nav.Link
+            as={Link}
+            href="/admin/products/manage"
+            className={`mb-2 rounded sidebar-link-text ${pathname === "/admin/products/manage" ? "active" : ""}`}
+          >
+            <i className="fa-solid fa-box me-2"></i> Kelola Produk
+          </Nav.Link>
+        </Nav>
+
+        {/* mt-auto AKAN MENDORONG BAGIAN INI KE BAWAH, TAPI TETAP AMAN DARI FOOTER KARENA PADDING CSS */}
+        <div className="p-3 border-top border-secondary mt-auto">
+          <Link
+            href="/"
+            className="btn btn-outline-info w-100 mb-3 d-flex align-items-center justify-content-center btn-rounded-10"
+          >
+            <i className="fa-solid fa-globe me-2"></i> Ke Website
+          </Link>
+          <BootstrapButton
+            variant="danger"
+            className="w-100 rounded-3"
+            onClick={() => setShowModal(true)}
+          >
+            <i className="fa-solid fa-right-from-bracket me-2"></i> Logout
+          </BootstrapButton>
         </div>
       </div>
 
-      <div className="flex-grow-1">
-        <Navbar bg="white" expand="lg" className="border-bottom px-4 shadow-sm">
-          <Navbar.Brand href="/admin" className="fw-bold text-secondary">
-            UMKM Muara Baru - Admin
+      <div className="flex-grow-1 bg-light">
+        <Navbar
+          bg="white"
+          expand="lg"
+          className="border-bottom px-4 shadow-sm py-3"
+        >
+          <Navbar.Brand className="fw-bold text-dark">
+            Dashboard Admin
           </Navbar.Brand>
         </Navbar>
-
         <div className="p-4">{children}</div>
       </div>
+
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        className="custom-dark-modal" // Tambahkan ini jika ingin bernuansa dark blue senada navbar
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Konfirmasi Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Apakah Anda yakin ingin keluar dari Admin Panel?
+        </Modal.Body>
+        <Modal.Footer>
+          <BootstrapButton
+            variant="outline-light"
+            onClick={() => setShowModal(false)}
+          >
+            Batal
+          </BootstrapButton>
+          <BootstrapButton variant="danger" onClick={handleLogoutConfirm}>
+            Ya, Logout
+          </BootstrapButton>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

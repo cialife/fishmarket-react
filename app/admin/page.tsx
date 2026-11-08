@@ -1,155 +1,139 @@
 "use client";
-
-import { Row, Col, Card } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Card, Row, Col } from "react-bootstrap";
+import { getUsers } from "@/lib/auth";
+import { getProduk } from "@/lib/produk";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
-  Filler,
   Legend,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
-  Filler,
   Legend,
 );
 
-export default function Dashboard() {
-  const data = {
-    labels: [
-      "Jan '23",
-      "Feb '23",
-      "Mar '23",
-      "Apr '23",
-      "May '23",
-      "Jun '23",
-      "Jul '23",
-    ],
+export default function AdminDashboard() {
+  const [totalUser, setTotalUser] = useState(0);
+  const [totalOrder, setTotalOrder] = useState(0);
+  const [recentProducts, setRecentProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    setTotalUser(getUsers().length);
+    
+    const allProducts = getProduk();
+    // Ambil maksimal 4 produk terbaru
+    setRecentProducts(allProducts.slice(-4).reverse());
+
+    const transaksiList = JSON.parse(localStorage.getItem("transaksi") || "[]");
+    const activePesanan = JSON.parse(localStorage.getItem("pesanan") || "[]");
+    setTotalOrder(
+      transaksiList.length > 0 ? transaksiList.length : activePesanan.length,
+    );
+  }, []);
+
+  const chartData = {
+    labels: ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"],
     datasets: [
       {
-        fill: true,
-        label: "Ikan Air Asin",
-        data: [28, 48, 40, 19, 86, 27, 90],
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.2)",
-        tension: 0.4,
+        label: "Ikan Air Asin (Kg)",
+        data: [8, 12, 10, 15, 14, 20, 18],
+        backgroundColor: "rgba(0, 119, 182, 0.8)", // Biru Laut
+        borderRadius: 4,
       },
       {
-        fill: true,
-        label: "Ikan Air Tawar",
-        data: [65, 59, 80, 81, 56, 55, 40],
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        tension: 0.4,
+        label: "Ikan Air Tawar (Kg)",
+        data: [4, 7, 5, 10, 8, 10, 10],
+        backgroundColor: "rgba(40, 167, 69, 0.8)", // Hijau Tawar
+        borderRadius: 4,
       },
     ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: { display: true, position: "top" as const },
-    },
-    scales: {
-      x: { grid: { color: "rgba(0, 0, 0, 0.05)" } },
-      y: { grid: { color: "rgba(0, 0, 0, 0.05)" } },
-    },
   };
 
   return (
-    <div className="admin-dashboard-container py-4">
-      <h3 className="mb-4 fw-bold dashboard-title">Dashboard</h3>
-
-      {/* Kartu Statistik Atas */}
+    <div>
       <Row className="mb-4">
-        <Col md={3}>
-          <Card className="bg-info text-white shadow-sm mb-3 border-0">
-            <Card.Body>
-              <h6>Total Produk</h6>
-              <h2 className="fw-bold">150</h2>
+        <Col md={4}>
+          <Card className="shadow-sm border-0 bg-primary text-white h-100 rounded-4">
+            <Card.Body className="d-flex flex-column justify-content-center align-items-center py-4">
+              <i className="fa-solid fa-users fs-1 mb-2"></i>
+              <h5 className="fw-light">Total Pelanggan Terdaftar</h5>
+              <h1 className="fw-bold">{totalUser}</h1>
             </Card.Body>
           </Card>
         </Col>
-
-        <Col md={3}>
-          <Card className="bg-success text-white shadow-sm mb-3 border-0">
-            <Card.Body>
-              <h6>Pengunjung Unik</h6>
-              <h2 className="fw-bold">53%</h2>
+        <Col md={4}>
+          <Card className="shadow-sm border-0 bg-success text-white h-100 rounded-4">
+            <Card.Body className="d-flex flex-column justify-content-center align-items-center py-4">
+              <i className="fa-solid fa-box-open fs-1 mb-2"></i>
+              <h5 className="fw-light">Total Produk Katalog</h5>
+              <h1 className="fw-bold">{getProduk().length}</h1>
             </Card.Body>
           </Card>
         </Col>
-
-        <Col md={3}>
-          <Card className="bg-warning text-dark shadow-sm mb-3 border-0">
-            <Card.Body>
-              <h6>Pesan Masuk</h6>
-              <h2 className="fw-bold">44</h2>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        <Col md={3}>
-          <Card className="bg-danger text-white shadow-sm mb-3 border-0">
-            <Card.Body>
-              <h6>Laporan Baru</h6>
-              <h2 className="fw-bold">65</h2>
+        <Col md={4}>
+          <Card className="shadow-sm border-0 bg-danger text-white h-100 rounded-4">
+            <Card.Body className="d-flex flex-column justify-content-center align-items-center py-4">
+              <i className="fa-solid fa-cart-shopping fs-1 mb-2"></i>
+              <h5 className="fw-light">Pesanan Baru</h5>
+              <h1 className="fw-bold">{totalOrder}</h1>
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      {/* Bagian Grafik & Produk */}
       <Row>
         <Col md={8}>
-          <Card className="shadow-sm mb-4 border-0">
-            <Card.Header className="bg-white fw-bold py-3">
-              Laporan Penjualan (Bulanan)
-            </Card.Header>
+          <Card className="shadow-sm border-0 rounded-4 mb-4">
             <Card.Body>
-              {/* Grafik Chart.js dipasang menggantikan placeholder teks sebelumnya */}
-              <div className="chart-container">
-                <Line data={data} options={options} />
+              <h5 className="fw-bold mb-4 text-dark">
+                Grafik Penjualan Terakhir
+              </h5>
+              <div className="w-100" style={{ height: "300px" }}>
+                <Bar
+                  data={chartData}
+                  options={{ maintainAspectRatio: false }}
+                />
               </div>
             </Card.Body>
           </Card>
         </Col>
-
         <Col md={4}>
-          <Card className="shadow-sm mb-4 border-0">
-            <Card.Header className="bg-white fw-bold py-3">
-              Produk Baru Ditambahkan
-            </Card.Header>
+          <Card className="shadow-sm border-0 rounded-4">
             <Card.Body>
-              <ul className="list-unstyled mb-0">
-                <li className="border-bottom py-2 d-flex justify-content-between">
-                  <span>Ikan Tuna</span>{" "}
-                  <span className="text-success">Tersedia</span>
-                </li>
-                <li className="border-bottom py-2 d-flex justify-content-between">
-                  <span>Ikan Tongkol</span>{" "}
-                  <span className="text-success">Tersedia</span>
-                </li>
-                <li className="border-bottom py-2 d-flex justify-content-between">
-                  <span>Ikan Lele</span>{" "}
-                  <span className="text-danger">Habis</span>
-                </li>
-                <li className="pt-2 d-flex justify-content-between">
-                  <span>Ikan Nila</span>{" "}
-                  <span className="text-success">Tersedia</span>
-                </li>
-              </ul>
+              <h5 className="fw-bold mb-3 text-dark">Baru Ditambahkan</h5>
+              <div className="d-flex flex-column gap-3">
+                {recentProducts.map((p) => (
+                  <div
+                    key={p.id}
+                    className="d-flex align-items-center border-bottom pb-2"
+                  >
+                    {/* IMPLEMENTASI CLASS CSS .admin-recent-img DI SINI */}
+                    <img
+                      src={p.src}
+                      alt={p.nama}
+                      className="admin-recent-img me-3"
+                    />
+
+                    <div>
+                      <h6 className="mb-0 fw-bold">{p.nama}</h6>
+                      <small className="text-muted">
+                        Rp {p.harga.toLocaleString("id-ID")}
+                      </small>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </Card.Body>
           </Card>
         </Col>

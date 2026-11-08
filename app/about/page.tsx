@@ -22,7 +22,7 @@ export default function AboutPage() {
             <SplitCard
                 title="Founder Pasar Ikan Modern Muara Baru"
                 text="Pada 13 Maret 2019, pasar kami resmi diresmikan oleh Joko Widodo, didampingi oleh Menteri Kelautan dan Perikanan serta sejumlah pejabat pemerintah lainnya. Dibangun di bawah Kementerian Kelautan dan Perikanan, fasilitas modern ini dirancang untuk menghadirkan standar perdagangan hasil laut yang lebih bersih dan berkelas dunia bagi masyarakat lokal."
-                media={<img src="/images/founder.png" alt="Founder" />}
+                media={<img src="/images/about/founder.png" alt="Founder" />}
             />
         </div>
         <div className="mb-5">

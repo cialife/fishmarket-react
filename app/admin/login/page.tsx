@@ -1,58 +1,71 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/Button";
 
-export default function AdminLogin() {
+export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleAdminLogin = (e: React.SubmitEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Kredensial akun khusus admin
-    if (username === "adminmuarabaru" && password === "Admin1234") {
+
+    const ADMIN_USERNAME = "adminmuarabaru";
+    const ADMIN_PASSWORD = "Admin1234";
+
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      alert("Login Admin berhasil!");
       sessionStorage.setItem("adminAuth", "true");
       router.push("/admin");
     } else {
-      setError("Username atau Password Admin salah!");
+      alert("Username atau password admin salah!");
     }
   };
 
   return (
-    <div className="container-home admin-login-wrapper d-flex justify-content-center align-items-center">
-      <div className="admin-login-card card p-4 shadow">
-        <h2
-          className="admin-login-title text-center mb-4"
-        >
-          Admin Portal
-        </h2>
-        {error && <div className="alert alert-danger py-2">{error}</div>}
-        <form onSubmit={handleAdminLogin}>
-          <div className="mb-3">
-            <label className="form-label">Username Admin</label>
-            <input
-              type="text"
-              className="form-control"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="button w-100">
-            Masuk ke Admin Panel
-          </button>
-        </form>
+    <div className="auth-wrapper">
+      <div className="admin-login-box">
+        <div className="admin-login-header">
+          <h1 className="admin-brand-logo lost-fish">
+            <i className="fa-solid fa-fish me-2"></i> Muara Baru
+          </h1>
+        </div>
+
+        <div className="p-4 p-md-5">
+          <h4 className="fw-bold text-center mb-4 text-dark">
+            Masuk Dashboard
+          </h4>
+          <form onSubmit={handleLogin}>
+            <div className="mb-3">
+              <label className="form-label fw-bold">Username</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Masukkan username admin"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="form-label fw-bold">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Masukkan password admin"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <Button type="submit" className="primary w-100 py-2 fs-6">
+              Masuk ke Dashboard
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );
