@@ -2,15 +2,10 @@
   --navy-950: rgb(9, 15, 32);
   --navy-900: rgb(10, 19, 49);
   --navy-800: rgb(27, 40, 75);
-  --navy-700: rgb(32, 43, 81);
   --navy-600: rgb(30, 47, 103);
-  --navy-overlay: rgba(27, 45, 94, 0.8);
 
   --kuning: rgb(248, 255, 116);
   --biru-muda: rgb(222, 250, 255);
-
-  --teks-judul: rgb(41, 41, 81);
-  --teks-abu: #525252;
 
   --bg-kiri: rgb(252, 255, 236);
   --bg-kanan: rgb(215, 248, 255);
@@ -273,7 +268,6 @@ p, a {
   overflow: hidden;
   min-height: 220px;
 }
-
 
 .split-media img, .split-media iframe {
   width: 100%;
@@ -551,129 +545,126 @@ footer a {
   color: rgb(248, 255, 116) !important;       /* Memastikan ikon berwarna kuning */
 }
 
+.secret-admin-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: text;
+}
+
 .admin-wrapper {
   min-height: 100vh;
   background-color: #f4f6f9;
 }
 
-.admin-sidebar {
-  width: 250px;
+.admin-brand-logo {
+  font-family: 'LostFish', Arial, sans-serif !important;
+  color: var(--kuning) !important;
+  text-decoration: none !important;
 }
 
-.admin-login-wrapper {
-  min-height: 80vh;
-  margin-top: 100px;
+.admin-brand-logo i {
+  color: var(--kuning) !important;
 }
 
-.admin-login-card {
-  width: 400px;
-  background: var(--navy-900);
-  color: var(--biru-muda);
-  border-radius: 20px;
-}
-
-.admin-login-title {
-  color: var(--kuning);
-  font-family: "HYWenHei";
-}
-
-.chart-placeholder {
-  height: 250px;
-}
-
-.login-wrapper {
+.admin-sidebar-custom {
+  background-color: var(--navy-900) !important;
   min-height: 100vh;
-  padding-top: 80px;
-  padding-bottom: 40px;
+  padding-bottom: 90px !important;
 }
 
-.login-card {
-  width: 400px;
-  background: var(--navy-900);
-  color: var(--biru-muda);
-  border-radius: 20px;
+.admin-recent-img {
+  width: 60px !important;
+  height: 60px !important;
+  min-width: 60px !important;
+  object-fit: cover !important;
+  border-radius: 8px;
 }
 
-.login-title {
-  color: var(--kuning);
-  font-family: "HYWenHei";
+.img-thumb-md {
+  width: 60px !important;
+  height: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+  max-height: 60px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  display: block !important;
 }
 
-.login-subtitle {
-  color: var(--teks-abu);
+.btn-rounded-10 {
+  border-radius: 10px !important;
 }
 
-.login-submit {
+.sidebar-link-text {
+  color: var(--biru-muda) !important;
+}
+.sidebar-link-text.active {
+  background-color: var(--kuning) !important;
+  color: var(--navy-950) !important;
+  font-weight: bold;
+}
+
+.admin-login-box {
+  width: 100%;
+  max-width: 420px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.admin-login-header {
+  background-color: var(--navy-900);
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.admin-login-header .admin-brand-logo {
+  font-family: 'LostFish', Arial, sans-serif !important;
+  color: var(--kuning) !important;
+  text-decoration: none !important;
+  font-size: 2.2rem;
   display: block;
+  margin-bottom: 5px;
 }
 
-.login-link {
-  color: var(--kuning);
-  text-decoration: underline;
+.admin-login-header .admin-brand-logo i {
+  color: var(--kuning) !important;
+}
+
+.admin-login-header .admin-subtitle-text {
+  color: var(--biru-muda);
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 .auth-wrapper {
   min-height: 100vh;
-  padding-top: 80px;
-  padding-bottom: 40px;
-}
-
-.auth-card {
-  width: 400px;
-  background: var(--navy-900);
-  color: var(--biru-muda);
-  border-radius: 20px;
-}
-
-.auth-card-wide {
-  width: 450px;
-}
-
-.auth-title {
-  color: var(--kuning);
-  font-family: "HYWenHei";
-}
-
-.auth-subtitle {
-  color: var(--teks-abu);
-}
-
-.auth-submit {
-  display: block;
-}
-
-.auth-link {
-  color: var(--kuning);
-  text-decoration: underline;
-}
-
-.admin-dashboard-container {
-  padding: 30px;
-  max-width: 1300px;
-  margin: 0 auto;
-}
-
-.dashboard-title {
-  font-family: 'HYWenHei', Arial, sans-serif;
-  color: var(--navy-900, #0a132b);
-}
-
-.chart-container {
-  position: relative;
-  width: 100%;
-  height: 320px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
 }
 
-.admin-dashboard-container .card {
+.auth-brand-logo {
+  font-family: 'LostFish', Arial, sans-serif !important;
+  color: var(--kuning) !important;
+  text-decoration: none !important;
+  font-size: 2rem;
+}
+
+.auth-brand-logo i {
+  color: var(--kuning) !important;
+}
+
+.card {
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.2s ease;
 }
 
-.admin-dashboard-container .card:hover {
+.card:hover {
   transform: translateY(-3px);
 }
 
@@ -786,6 +777,30 @@ footer a {
 
 .modal-title {
   color: rgb(10, 19, 49);
+}
+
+.custom-dark-modal .modal-content {
+  background-color: var(--navy-900) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 16px !important;
+}
+
+.custom-dark-modal .modal-header,
+.custom-dark-modal .modal-body,
+.custom-dark-modal .modal-footer {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.custom-dark-modal .modal-title {
+  color: var(--kuning) !important;
+  font-family: 'HYWenHei', Arial, sans-serif !important;
+}
+
+.custom-dark-modal .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
 }
 
 .min-btn {
