@@ -1,3 +1,6 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Hero from "@/components/Hero";
 import Button from "@/components/Button";
 import Title from "@/components/Title";
@@ -5,6 +8,7 @@ import ImageGrid from "@/components/ImageGrid";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { getContent, getDefaultContent } from "@/lib/content";
 import type { Metadata } from "next";
 
 const image = [
@@ -15,6 +19,18 @@ const image = [
 ];
 
 export default function HomePage() {
+  const [content, setContent] = useState(getDefaultContent());
+
+  useEffect(() => {
+    setContent(getContent());
+
+    const handleUpdate = () => {
+      setContent(getContent());
+    };
+    window.addEventListener("contentUpdated", handleUpdate);
+    return () => window.removeEventListener("contentUpdated", handleUpdate);
+  }, []);
+
   return (
     <>
       <title>Beranda | Muara Baru</title>

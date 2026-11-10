@@ -25,7 +25,6 @@ export default function RegisterPage() {
   return (
     <div className="auth-wrapper">
       <div className="admin-login-box">
-        {/* Header Gelap Senada dengan Admin */}
         <div className="admin-login-header">
           <h1 className="admin-brand-logo lost-fish">
             <i className="fa-solid fa-fish me-2"></i> Muara Baru
@@ -35,7 +34,6 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* Body Putih dengan Teks Gelap */}
         <div className="p-4 p-md-5">
           <h4 className="fw-bold text-center mb-4 text-dark">
             Daftar Pelanggan
@@ -77,20 +75,29 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Tombol Gelap */}
             <Button type="submit" className="primary w-100 py-2 fs-6">
               Daftar Sekarang
             </Button>
           </form>
 
-          <div className="text-center mt-3">
-            <span className="text-muted">Sudah punya akun? </span>
-            <Link
-              href="/login"
-              className="text-primary fw-bold text-decoration-none"
-            >
-              Masuk di sini
-            </Link>
+          <div className="text-center mt-4">
+            <p className="text-muted mb-2 small">
+              Sudah punya akun? Masuk sebagai:
+            </p>
+            <div className="d-flex justify-content-center gap-4">
+              <Link
+                href="/login"
+                className="text-primary fw-bold text-decoration-none"
+              >
+                <i className="fa-solid fa-user me-1"></i> Pelanggan
+              </Link>
+              <Link
+                href="/admin/login"
+                className="text-danger fw-bold text-decoration-none"
+              >
+                <i className="fa-solid fa-user-tie me-1"></i> Admin
+              </Link>
+            </div>
           </div>
         </div>
       </div>

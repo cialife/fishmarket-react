@@ -1,7 +1,9 @@
 "use client";
+
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
+import Link from "next/link";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
@@ -65,6 +67,17 @@ export default function AdminLoginPage() {
               Masuk ke Dashboard
             </Button>
           </form>
+
+          <div className="text-center mt-4">
+            <div className="d-flex justify-content-center gap-4">
+              <Link
+                href="/login"
+                className="text-primary fw-bold text-decoration-none"
+              >
+                <i className="fa-solid fa-user me-1"></i>Masuk Sebagai Pelanggan
+              </Link>
+              </div>
+          </div>
         </div>
       </div>
     </div>

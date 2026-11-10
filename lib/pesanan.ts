@@ -55,6 +55,19 @@ export function saveTransaksi(t: Transaksi) {
     localStorage.setItem(KEY_TRANSAKSI, JSON.stringify(t));
 }
 
+export function getTransaksiList(): Transaksi[] {
+  if (typeof window === "undefined") return [];
+  const raw = localStorage.getItem(KEY_TRANSAKSI);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+    return [parsed];
+  } catch {
+    return [];
+  }
+}
+
 export function getTransaksi(): Transaksi | null {
     const raw = localStorage.getItem(KEY_TRANSAKSI);
     return raw ? JSON.parse(raw) : null;

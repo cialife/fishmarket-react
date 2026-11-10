@@ -22,7 +22,6 @@ export default function LoginPage() {
   return (
     <div className="auth-wrapper">
       <div className="admin-login-box">
-        {/* Header Gelap Senada dengan Admin */}
         <div className="admin-login-header">
           <h1 className="admin-brand-logo lost-fish">
             <i className="fa-solid fa-fish me-2"></i> Muara Baru
@@ -32,7 +31,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Body Putih dengan Teks Gelap */}
         <div className="p-4 p-md-5">
           <h4 className="fw-bold text-center mb-4 text-dark">
             Masuk Pelanggan
@@ -61,19 +59,27 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Tombol Gelap */}
             <Button type="submit" className="primary w-100 py-2 fs-6">
               Masuk
             </Button>
           </form>
 
-          <div className="text-center mt-3">
-            <span className="text-muted">Belum punya akun? </span>
+          <div className="text-center mt-4">
+            <div className="mb-3">
+              <span className="text-muted small">Belum punya akun? </span>
+              <Link
+                href="/register"
+                className="text-primary fw-bold text-decoration-none small"
+              >
+                Daftar sekarang
+              </Link>
+            </div>
+            <hr className="opacity-25 my-3" />
             <Link
-              href="/register"
-              className="text-primary fw-bold text-decoration-none"
+              href="/admin/login"
+              className="text-danger fw-bold text-decoration-none small"
             >
-              Daftar sekarang
+              <i className="fa-solid fa-user-tie me-1"></i> Masuk sebagai Admin
             </Link>
           </div>
         </div>
