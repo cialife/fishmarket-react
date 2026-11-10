@@ -9,7 +9,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { getPesanan } from "@/lib/pesanan";
 import Badge from "react-bootstrap/Badge";
-import { Modal, Button as BootstrapButton } from "react-bootstrap";
+import Modal from "@/components/Modal";
 import { logoutUser } from "@/lib/auth";
 
 export default function Header() {
@@ -70,24 +70,31 @@ export default function Header() {
             >
               Tentang Kami
             </Nav.Link>
+            <Nav.Link
+              as={Link}
+              href="/catalog"
+              className={pathname === "/catalog" ? "active" : ""}
+            >
+              Produk
+            </Nav.Link>
             <NavDropdown
-              title="Produk"
+              title="Pesanan"
               id="basic-nav-dropdown"
               show={showProduk}
               onMouseEnter={() => setShowProduk(true)}
               onMouseLeave={() => setShowProduk(false)}
               onToggle={(isOpen) => setShowProduk(isOpen)}
             >
-              <NavDropdown.Item href="/catalog">
-                Katalog Produk
-              </NavDropdown.Item>
               <NavDropdown.Item href="/pesanan">
-                Pesanan
+                Lihat Pesanan
                 {jumlahPesanan > 0 && (
                   <Badge bg="danger" pill className="ms-2">
                     {jumlahPesanan}
                   </Badge>
                 )}
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} href="/pesanan/riwayat">
+                Lihat Riwayat Pemesanan
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link
@@ -111,25 +118,14 @@ export default function Header() {
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
-        centered
-        className="custom-dark-modal"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Konfirmasi Logout</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Apakah Anda yakin ingin keluar dari akun?</Modal.Body>
-        <Modal.Footer>
-          <BootstrapButton
-            variant="outline-light"
-            onClick={() => setShowModal(false)}
-          >
-            Batal
-          </BootstrapButton>
-          <BootstrapButton variant="danger" onClick={handleLogoutConfirm}>
-            Ya, Logout
-          </BootstrapButton>
-        </Modal.Footer>
-      </Modal>
+        title="Konfirmasi Logout"
+        message="Apakah Anda yakin ingin keluar dari akun?"
+        confirmText="Ya, Logout"
+        cancelText="Batal"
+        cancelClassName="btn btn-outline-light"
+        confirmClassName="btn btn-danger"
+        onConfirm={handleLogoutConfirm}
+      />
     </Navbar>
   );
 }

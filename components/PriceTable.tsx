@@ -1,16 +1,38 @@
-import { Fragment } from "react";
-import { productData, PENYAJIAN } from "@/app/data/dataProduct";
-
-type Kategori = "Ikan Air Asin" | "Ikan Air Tawar";
+"use client";
+import { Fragment, useEffect, useState } from "react";
+import { ProductItem, PENYAJIAN } from "@/app/data/dataProduct";
+import { getProduk } from "@/lib/produk";
+import { getKategori, KategoriItem } from "@/lib/kategori";
 
 type Props = {
-  kategori?: Kategori; // opsional: kosong = tampilkan semua kategori
+  kategori?: string; // opsional: kosong = tampilkan semua kategori
 };
 
-const SEMUA_KATEGORI: Kategori[] = ["Ikan Air Asin", "Ikan Air Tawar"];
-
 export default function PriceTable({ kategori }: Props) {
-  const daftarKategori = kategori ? [kategori] : SEMUA_KATEGORI;
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [categories, setCategories] = useState<KategoriItem[]>([]);
+
+  useEffect(() => {
+    const loadProduk = () => setProducts(getProduk());
+    const loadKategori = () => setCategories(getKategori());
+
+    loadProduk();
+    loadKategori();
+
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "products") loadProduk();
+      if (e.key === "categories_data") loadKategori();
+    };
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("kategoriUpdated", loadKategori);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("kategoriUpdated", loadKategori);
+    };
+  }, []);
+
+  const daftarKategori = kategori ? [kategori] : categories.map((k) => k.nama);
 
   return (
     <div className="price-table-wrap">
@@ -28,11 +50,26 @@ export default function PriceTable({ kategori }: Props) {
           </tr>
         </thead>
         <tbody>
-          {daftarKategori.map((kategori) => {
-            const items = productData.filter((p) => p.kategori === kategori);
+          {daftarKategori.map((namaKategori) => {
+            const items = products.filter((p) => p.kategori === namaKategori);
+
+            // kategori baru tanpa produk tetap ditampilkan
+            if (items.length === 0) {
+              return (
+                <tr key={namaKategori}>
+                  <th scope="row" className="text-muted">
+                    -
+                  </th>
+                  <td colSpan={PENYAJIAN.length} className="text-muted">
+                    Belum ada produk
+                  </td>
+                  <td className="kategori-cell">{namaKategori}</td>
+                </tr>
+              );
+            }
 
             return (
-              <Fragment key={kategori}>
+              <Fragment key={namaKategori}>
                 {items.map((item, i) => (
                   <tr key={item.id}>
                     <th scope="row">{item.nama}</th>
@@ -41,10 +78,9 @@ export default function PriceTable({ kategori }: Props) {
                         {(item.harga + p.tambahan) / 1000}K / kg
                       </td>
                     ))}
-                    {/* sel kategori hanya di baris pertama, menutupi semua baris kategori itu */}
                     {i === 0 && (
                       <td rowSpan={items.length} className="kategori-cell">
-                        {kategori}
+                        {namaKategori}
                       </td>
                     )}
                   </tr>

@@ -1,12 +1,16 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, Form, Row, Col } from "react-bootstrap";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
 import { getProduk, saveProduk } from "@/lib/produk";
+import { getKategori, KategoriItem } from "@/lib/kategori";
 
 export default function AddProduct() {
   const router = useRouter();
+  const [categories, setCategories] = useState<KategoriItem[]>([]);
   const [formData, setFormData] = useState({
     nama: "",
     kategori: "Ikan Air Asin",
@@ -14,6 +18,28 @@ export default function AddProduct() {
     desc: "",
   });
   const [image64, setImage64] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  useEffect(() => {
+    const loadKategori = () => {
+      const list = getKategori();
+      setCategories(list);
+      // pilih kategori pertama jika kategori terpilih belum valid
+      setFormData((prev) =>
+        list.some((k) => k.nama === prev.kategori)
+          ? prev
+          : { ...prev, kategori: list[0]?.nama ?? "" },
+      );
+    };
+
+    loadKategori();
+    window.addEventListener("kategoriUpdated", loadKategori);
+    window.addEventListener("storage", loadKategori);
+    return () => {
+      window.removeEventListener("kategoriUpdated", loadKategori);
+      window.removeEventListener("storage", loadKategori);
+    };
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -41,10 +67,14 @@ export default function AddProduct() {
       kategori: formData.kategori,
       harga: Number(formData.harga),
       desc: formData.desc,
-      src: image64 || "/images/product/default.png",
+      src: image64,
     };
     saveProduk([...currentProducts, newProduct]);
-    alert(`Produk ${formData.nama} berhasil ditambahkan!`);
+    setShowSuccessModal(true);
+  };
+
+  const handleModalConfirm = () => {
+    setShowSuccessModal(false);
     router.push("/admin/products/manage");
   };
 
@@ -78,9 +108,16 @@ export default function AddProduct() {
                       name="kategori"
                       value={formData.kategori}
                       onChange={handleChange}
+                      required
                     >
-                      <option value="Ikan Air Asin">Ikan Air Asin</option>
-                      <option value="Ikan Air Tawar">Ikan Air Tawar</option>
+                      {categories.length === 0 && (
+                        <option value="">Belum ada kategori</option>
+                      )}
+                      {categories.map((kat) => (
+                        <option key={kat.id} value={kat.nama}>
+                          {kat.nama}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                 </Col>
@@ -128,7 +165,6 @@ export default function AddProduct() {
                 {image64 && (
                   <div className="mt-3 text-center bg-light p-3 rounded">
                     <p className="small text-muted mb-2">Preview Foto:</p>
-                    {/* MENGGUNAKAN CLASS img-preview-lg DARI CSS EKSTERNAL */}
                     <img
                       src={image64}
                       alt="Preview"
@@ -137,7 +173,6 @@ export default function AddProduct() {
                   </div>
                 )}
               </Form.Group>
-
               <Button type="submit" className="primary w-100 py-2 fs-5">
                 Simpan Produk ke Katalog
               </Button>
@@ -145,6 +180,17 @@ export default function AddProduct() {
           </Card.Body>
         </Card>
       </Col>
+      <Modal
+        show={showSuccessModal}
+        onHide={handleModalConfirm}
+        title="Berhasil"
+        message={`Produk "${formData.nama}" berhasil ditambahkan ke katalog!`}
+        confirmText="Lihat Kelola Produk"
+        cancelText="Tutup"
+        confirmClassName="btn btn-success"
+        cancelClassName="btn btn-outline-light"
+        onConfirm={handleModalConfirm}
+      />
     </Row>
   );
 }

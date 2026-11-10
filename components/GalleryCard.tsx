@@ -54,7 +54,7 @@ export default function GalleryCard({ item, onSelect }: GalleryCardProps) {
       src="https://cdn-icons-png.flaticon.com/256/44/44981.png" 
       alt="Zoom" 
       className="zoom-icon-img"
-      style={{ width: '15px', height: '15px' }} // Pakai inline style agar ukurannya patuh dan benar-benar kecil
+      style={{ width: '15px', height: '15px' }}
     />
   ) : (
     <i className="fa-solid fa-play text-warning fs-6"></i>
@@ -63,7 +63,7 @@ export default function GalleryCard({ item, onSelect }: GalleryCardProps) {
 </div>
 
       <Card.Body className="text-center bg-white py-3">
-        <Card.Title className="fw-bold text-dark fs-5 mb-1">{item.title}</Card.Title>
+        <Card.Title className="fw-bold text-dark fs-5 mb-1 roman">{item.title}</Card.Title>
         <Card.Text className="text-muted small mb-0">{item.desc}</Card.Text>
       </Card.Body>
     </Card>

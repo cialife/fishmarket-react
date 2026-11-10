@@ -1,29 +1,54 @@
-export const getUsers = () => {
-  if (typeof window === "undefined") return [];
-  return JSON.parse(localStorage.getItem("users") || "[]");
+export type User = {
+  name: string;
+  email: string;
+  password?: string;
+  role: string;
 };
 
-export const registerUser = (userData: any) => {
+const normalize = (email: string) => email.trim().toLowerCase();
+
+export const getUsers = (): User[] => {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem("users") || "[]");
+  } catch {
+    return [];
+  }
+};
+
+export const registerUser = (userData: User) => {
   const users = getUsers();
-  // Cek apakah email sudah ada
-  if (users.find((u: any) => u.email === userData.email)) {
+  const email = normalize(userData.email);
+  if (users.some((u) => normalize(u.email) === email)) {
     return { success: false, message: "Email sudah terdaftar!" };
   }
-  users.push(userData);
+  users.push({ ...userData, email, name: userData.name.trim() });
   localStorage.setItem("users", JSON.stringify(users));
   return { success: true };
 };
 
 export const loginUser = (email: string, pass: string) => {
-  const users = getUsers();
-  const user = users.find((u: any) => u.email === email && u.password === pass);
-  if (user) {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    return { success: true, user };
+  const user = getUsers().find(
+    (u) => normalize(u.email) === normalize(email) && u.password === pass,
+  );
+  if (!user) return { success: false, message: "Email atau password salah!" };
+
+  // password tidak ikut disimpan sebagai current user
+  const { password, ...safeUser } = user;
+  localStorage.setItem("currentUser", JSON.stringify(safeUser));
+  return { success: true, user: safeUser };
+};
+
+export const getCurrentUser = (): Omit<User, "password"> | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    return JSON.parse(localStorage.getItem("currentUser") || "null");
+  } catch {
+    return null;
   }
-  return { success: false, message: "Email atau password salah!" };
 };
 
 export const logoutUser = () => {
   localStorage.removeItem("currentUser");
+  sessionStorage.removeItem("customerAuth");
 };

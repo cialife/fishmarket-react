@@ -36,8 +36,8 @@ export default function HomePage() {
       <title>Beranda | Muara Baru</title>
       <Hero
         videoSrc="/videos/home.mp4"
-        title="Pasar Ikan Modern Muara Baru"
-        sub="Segarnya tetap asli."
+        title={content.homeTitle}
+        sub={content.homeSub}
         buttonLink="content"
       />
       <div className="container container-home" id="content">
@@ -49,18 +49,15 @@ export default function HomePage() {
           <Row className="align-items-center g-5">
             <Col xs={12} md={6}>
               <div className="text">
-                <h2>Ikan premium, harga jujur, segar setiap hari!</h2>
-                <p>
-                  Siap untuk mencobanya? Jelajahi tangkapan harian kami yang
-                  dipilih secara cermat demi kualitas dan kesegarannya.
-                </p>
+                <h2>{content.homeH2}</h2>
+                <p>{content.homeP}</p>
                 <Button href="/about" className="primary">
                   Jelajahi <i className="fa-solid fa-arrow-right-long"></i>
                 </Button>
               </div>
             </Col>
             <Col xs={12} md={6}>
-              <ImageGrid images={image} />
+              <ImageGrid images={content.homeImages} />
             </Col>
           </Row>
         </Container>

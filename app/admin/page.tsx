@@ -1,9 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Table, Badge } from "react-bootstrap";
+import { Card, Row, Col, Table, Form } from "react-bootstrap";
 import { getUsers } from "@/lib/auth";
 import { getProduk } from "@/lib/produk";
-import { getTransaksiList, Transaksi } from "@/lib/pesanan";
+import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import {
+  getTransaksiList,
+  updateTransaksiStatus,
+  deleteTransaksi,
+  Transaksi,
+} from "@/lib/pesanan";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -30,21 +37,60 @@ export default function AdminDashboard() {
   const [totalOmset, setTotalOmset] = useState(0);
   const [recentProducts, setRecentProducts] = useState<any[]>([]);
   const [transaksiList, setTransaksiList] = useState<Transaksi[]>([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [targetDeleteId, setTargetDeleteId] = useState<number | null>(null);
 
   useEffect(() => {
     setTotalUser(getUsers().length);
-
     const allProducts = getProduk();
     setRecentProducts(allProducts.slice(-4).reverse());
+    refreshTransaksi();
+    refreshTransaksi();
+  }, []);
 
+  const refreshTransaksi = () => {
     const tList = getTransaksiList();
     setTransaksiList(tList);
     setTotalOrder(tList.length);
-
-    // Hitung total omset
     const omset = tList.reduce((sum, t) => sum + (t.total || 0), 0);
     setTotalOmset(omset);
-  }, []);
+  };
+
+  const handleStatusChange = (id: number, newStatus: string) => {
+    updateTransaksiStatus(id, newStatus);
+    refreshTransaksi();
+  };
+
+  const openDeleteModal = (id: number) => {
+    setTargetDeleteId(id);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteTransaksi = () => {
+    if (targetDeleteId) {
+      deleteTransaksi(targetDeleteId);
+      refreshTransaksi();
+    }
+      setShowDeleteModal(false);
+      setTargetDeleteId(null);
+  };
+
+  const getStatusBootstrapClass = (status: string) => {
+    switch (status) {
+      case "Menunggu":
+        return "bg-warning text-dark";
+      case "Diproses":
+        return "bg-info text-dark";
+      case "Dikirim":
+        return "bg-primary text-white";
+      case "Selesai":
+        return "bg-success text-white";
+      case "Dibatalkan":
+        return "bg-danger text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
 
   const chartData = {
     labels: ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"],
@@ -115,7 +161,7 @@ export default function AdminDashboard() {
           <Card className="shadow-sm border-0 rounded-4 mb-4 mb-md-0 h-100">
             <Card.Body>
               <h5 className="fw-bold mb-3 text-dark">
-                Grafik Penjualan (Air Asin vs Air Tawar)
+                Grafik Penjualan ((Air Asin vs Air Tawar))
               </h5>
               <div className="w-100" style={{ height: "280px" }}>
                 <Bar
@@ -175,42 +221,107 @@ export default function AdminDashboard() {
                       <th>No Pesanan</th>
                       <th>Pelanggan</th>
                       <th>Menu / Produk Dipilih</th>
+                      <th>Harga Satuan</th>
                       <th>Total Pembayaran</th>
                       <th className="text-center">Status</th>
+                      <th className="text-center">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {transaksiList.map((t) => (
-                      <tr key={t.id}>
-                        <td className="fw-bold text-primary">#{t.id}</td>
-                        <td>
-                          <div className="fw-bold">
-                            {t.pemesan?.nama || "Tanpa Nama"}
-                          </div>
-                          <small className="text-muted">
-                            {t.pemesan?.email || "-"}
-                          </small>
-                        </td>
-                        <td>
-                          <ul className="list-unstyled mb-0 small">
-                            {t.items?.map((item, idx) => (
-                              <li key={idx}>
-                                • <strong>{item.nama}</strong> ({item.penyajian}
-                                ) x {item.jumlah} kg
-                              </li>
-                            ))}
-                          </ul>
-                        </td>
-                        <td className="fw-bold text-success">
-                          Rp {(t.total || 0).toLocaleString("id-ID")}
-                        </td>
-                        <td className="text-center">
-                          <Badge bg="success" className="px-2 py-1">
-                            {t.status || "Selesai"}
-                          </Badge>
-                        </td>
-                      </tr>
-                    ))}
+                    {transaksiList.map((t) => {
+                      const currentStatus = t.status || "Selesai";
+                      return (
+                        <tr key={t.id}>
+                          <td className="fw-bold text-primary">#{t.id}</td>
+                          <td>
+                            <div className="fw-bold">
+                              {t.pemesan?.nama || "Tanpa Nama"}
+                            </div>
+                            <small className="text-muted">
+                              {t.pemesan?.email || "-"}
+                            </small>
+                          </td>
+                          <td>
+                            <ul className="list-unstyled mb-0 small">
+                              {t.items?.map((item, idx) => (
+                                <li key={idx}>
+                                  • <strong>{item.nama}</strong> (
+                                  {item.penyajian}) x {item.jumlah} kg
+                                </li>
+                              ))}
+                            </ul>
+                          </td>
+                          <td>
+                            <ul className="list-unstyled mb-0 small">
+                              {t.items?.map((item, idx) => (
+                                <li
+                                  key={idx}
+                                  className="mb-1 text-info fw-bold"
+                                >
+                                  Rp{" "}
+                                  {(item.hargaSatuan || 0).toLocaleString(
+                                    "id-ID",
+                                  )}{" "}
+                                  / kg
+                                </li>
+                              ))}
+                            </ul>
+                          </td>
+                          <td className="fw-bold text-success">
+                            Rp {(t.total || 0).toLocaleString("id-ID")}
+                          </td>
+                          <td className="text-center">
+                            <Form.Select
+                              size="sm"
+                              value={currentStatus}
+                              onChange={(e) =>
+                                handleStatusChange(t.id, e.target.value)
+                              }
+                              className={`fw-bold text-center ps-4 shadow-sm ${getStatusBootstrapClass(currentStatus)}`}
+                            >
+                              <option
+                                value="Menunggu"
+                                className="bg-light text-center ps-0 text-dark"
+                              >
+                                Menunggu
+                              </option>
+                              <option
+                                value="Diproses"
+                                className="bg-light text-center ps-0 text-dark"
+                              >
+                                Diproses
+                              </option>
+                              <option
+                                value="Dikirim"
+                                className="bg-light text-center ps-0 text-dark"
+                              >
+                                Dikirim
+                              </option>
+                              <option
+                                value="Selesai"
+                                className="bg-light text-center ps-0 text-dark"
+                              >
+                                Selesai
+                              </option>
+                              <option
+                                value="Dibatalkan"
+                                className="bg-light text-center ps-0 text-dark"
+                              >
+                                Dibatalkan
+                              </option>
+                            </Form.Select>
+                          </td>
+                          <td className="text-center">
+                            <Button
+                              className="btn btn-danger btn-sm d-inline-flex align-items-center gap-1 px-3 py-1 fw-bold"
+                              onClick={() => openDeleteModal(t.id)}
+                            >
+                              <i className="fa-solid fa-trash me-1"></i> Hapus
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </Table>
               )}
@@ -218,6 +329,17 @@ export default function AdminDashboard() {
           </Card>
         </Col>
       </Row>
+      <Modal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        title="Konfirmasi Hapus Pesanan"
+        message={`Apakah Anda yakin ingin menghapus pesanan #${targetDeleteId}?`}
+        confirmText="Ya, Hapus"
+        cancelText="Batal"
+        confirmClassName="btn btn-danger"
+        cancelClassName="btn btn-outline-light"
+        onConfirm={handleDeleteTransaksi}
+      />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
-import { productData } from "@/app/data/dataProduct";
+import { ProductItem } from "@/app/data/dataProduct";
+import { getProduk } from "@/lib/produk";
 
 type Props = {
   kategori?: "Ikan Air Asin" | "Ikan Air Tawar"; // kosong = semua ikan
@@ -8,10 +10,22 @@ type Props = {
 };
 
 export default function MiniCarousel({ kategori, height = "180px" }: Props) {
-  const items = kategori
-    ? productData.filter((p) => p.kategori === kategori)
-    : productData;
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  
+  useEffect(() => {
+    setProducts(getProduk());
+  
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "products") setProducts(getProduk());
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
+  const items = kategori
+    ? products.filter((p) => p.kategori === kategori)
+    : products;
+    
   return (
     <Carousel
       interval={2500}

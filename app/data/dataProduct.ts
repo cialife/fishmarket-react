@@ -1,7 +1,7 @@
 export type ProductItem = {
     id: number;
     nama: string;
-    kategori: "Ikan Air Asin" | "Ikan Air Tawar";
+    kategori: string;
     harga: number;
     desc: string;
     src: string;

@@ -1,8 +1,10 @@
 "use client";
+
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/Button";
+import { loginUser } from "@/lib/auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,11 +13,12 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) {
+    const result = loginUser(email, password);
+    if (result.success) {
       sessionStorage.setItem("customerAuth", "true");
       router.push("/");
     } else {
-      alert("Mohon masukkan email dan password yang valid.");
+      alert(result.message);
     }
   };
 
