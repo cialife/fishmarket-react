@@ -237,8 +237,8 @@ export default function PesananPage() {
         }
         confirmText="Ya, Kirim Pesanan"
         cancelText="Batal"
-        cancelClassName="primary"
-        confirmClassName="btn btn-success"
+        cancelClassName="btn btn-outline-light"
+        confirmClassName="primary"
         onConfirm={handleProsesKirim}
       />
     </>
