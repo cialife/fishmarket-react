@@ -1,12 +1,15 @@
+import { getProduk } from "@/lib/produk";
+
 export type Pesanan = {
   id: number;
   nama: string;
   src: string;
+  kategori?: string;
   penyajian: string;
   jumlah: number;
   hargaSatuan: number;
   total: number;
-  catatan?: string; 
+  catatan?: string;
 };
 
 const KEY = "pesanan";
@@ -42,7 +45,7 @@ export type Pemesan = {
 
 export type Transaksi = {
   id: number;
-  tanggal: string;
+  tanggal?: string;
   pemesan: Pemesan;
   items: Pesanan[];
   total: number;
@@ -53,7 +56,22 @@ const KEY_TRANSAKSI = "transaksi";
 
 export function saveTransaksi(t: Transaksi) {
   const list = getTransaksiList();
-  list.unshift({ ...t, status: t.status || "Menunggu" });
+  const produkList = getProduk();
+
+  const transaksiBaru: Transaksi = {
+    ...t,
+    tanggal: t.tanggal ?? new Date().toISOString(),
+    status: t.status || "Menunggu",
+    items: t.items.map((item) => ({
+      ...item,
+      kategori:
+        item.kategori ??
+        produkList.find((p) => p.nama === item.nama)?.kategori ??
+        "",
+    })),
+  };
+
+  list.unshift(transaksiBaru);
   localStorage.setItem(KEY_TRANSAKSI, JSON.stringify(list));
   window.dispatchEvent(new Event("pesananUpdated"));
 }

@@ -1,6 +1,6 @@
-import { productData } from "@/app/data/dataProduct";
+import { productData, ProductItem } from "@/app/data/dataProduct";
 
-export const getProduk = () => {
+export const getProduk = (): ProductItem[] => {
   if (typeof window === "undefined") return [];
   const localData = localStorage.getItem("products");
   if (localData) {

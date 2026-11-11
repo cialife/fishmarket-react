@@ -60,7 +60,7 @@ export default function StrukPage() {
             <div className="mt-2 text-muted">
               <small>No. {t.id}</small>
               <br />
-              <small>{t.tanggal}</small>
+              <small>{new Date(t.tanggal ?? "").toLocaleString("id-ID")}</small>
             </div>
           </div>
 

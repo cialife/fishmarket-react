@@ -63,7 +63,7 @@ export default function PesananPage() {
     setShowConfirmModal(false);
     saveTransaksi({
       id: Date.now(),
-      tanggal: new Date().toLocaleString("id-ID"),
+      tanggal: new Date().toISOString(),
       pemesan: form,
       items: data,
       total: totalSemua,

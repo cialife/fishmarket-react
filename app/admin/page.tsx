@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Card, Row, Col, Table, Form } from "react-bootstrap";
 import { getUsers } from "@/lib/auth";
 import { getProduk } from "@/lib/produk";
@@ -92,23 +92,64 @@ export default function AdminDashboard() {
     }
   };
 
-  const chartData = {
-    labels: ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"],
-    datasets: [
-      {
-        label: "Ikan Air Asin (Kg)",
-        data: [8, 12, 10, 15, 14, 20, 18],
-        backgroundColor: "rgba(0, 119, 182, 0.8)",
+  const WARNA = [
+    "rgba(0, 119, 182, 0.8)",
+    "rgba(40, 167, 69, 0.8)",
+    "rgba(255, 193, 7, 0.8)",
+    "rgba(220, 53, 69, 0.8)",
+    "rgba(111, 66, 193, 0.8)",
+    "rgba(253, 126, 20, 0.8)",
+  ];
+
+  const chartData = useMemo(() => {
+    const produkList = getProduk();
+
+    // Daftar kategori dari produk (unik) + dari transaksi, supaya kategori lama tetap tampil
+    const kategoriSet = new Set<string>();
+    produkList.forEach((p) => p.kategori && kategoriSet.add(p.kategori));
+    transaksiList.forEach((t) =>
+      t.items?.forEach((i) => i.kategori && kategoriSet.add(i.kategori)),
+    );
+    const kategoriList = Array.from(kategoriSet);
+
+    // Siapkan 7 hari untuk tiap kategori
+    const totals: Record<string, number[]> = {};
+    kategoriList.forEach((k) => (totals[k] = Array(7).fill(0)));
+
+    const now = new Date();
+    const offset = (now.getDay() + 6) % 7;
+    const startOfWeek = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() - offset,
+    );
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+    transaksiList.forEach((t) => {
+      if ((t.status || "Selesai") !== "Selesai") return;
+      if (!t.tanggal) return;
+      const tgl = new Date(t.tanggal);
+      if (isNaN(tgl.getTime())) return;
+      if (tgl < startOfWeek || tgl >= endOfWeek) return;
+      const idx = (tgl.getDay() + 6) % 7;
+
+      t.items?.forEach((item) => {
+        if (!item.kategori || !totals[item.kategori]) return;
+        totals[item.kategori][idx] += Number(item.jumlah) || 0;
+      });
+    });
+
+    return {
+      labels: ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"],
+      datasets: kategoriList.map((k, i) => ({
+        label: `${k} (Kg)`,
+        data: totals[k],
+        backgroundColor: WARNA[i % WARNA.length],
         borderRadius: 4,
-      },
-      {
-        label: "Ikan Air Tawar (Kg)",
-        data: [4, 7, 5, 10, 8, 10, 10],
-        backgroundColor: "rgba(40, 167, 69, 0.8)",
-        borderRadius: 4,
-      },
-    ],
-  };
+      })),
+    };
+  }, [transaksiList]);
 
   return (
     <div>
@@ -160,13 +201,16 @@ export default function AdminDashboard() {
         <Col md={8}>
           <Card className="shadow-sm border-0 rounded-4 mb-4 mb-md-0 h-100">
             <Card.Body>
-              <h5 className="fw-bold mb-3 text-dark">
-                Grafik Penjualan ((Air Asin vs Air Tawar))
-              </h5>
+              <h5 className="fw-bold mb-3 text-dark">Grafik Penjualan</h5>
               <div className="w-100" style={{ height: "280px" }}>
                 <Bar
                   data={chartData}
-                  options={{ maintainAspectRatio: false }}
+                  options={{
+                    maintainAspectRatio: false,
+                    scales: {
+                      y: { beginAtZero: true, ticks: { precision: 0 } },
+                    },
+                  }}
                 />
               </div>
             </Card.Body>
