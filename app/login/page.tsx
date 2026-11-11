@@ -120,7 +120,7 @@ export default function LoginPage() {
         message={alertModal.message}
         confirmText="OK"
         confirmClassName={
-          alertModal.success ? "btn btn-primary" : "btn btn-danger"
+          alertModal.success ? "primary" : "primary"
         }
         hideCancel
         onConfirm={handleCloseAlert}

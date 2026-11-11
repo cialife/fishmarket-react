@@ -10,9 +10,11 @@ import Title from "@/components/Title";
 import Button from "@/components/Button";
 import { getTransaksiList, Transaksi } from "@/lib/pesanan";
 import { getCurrentUser } from "@/lib/auth";
+import { getContent, getDefaultContent } from "@/lib/content";
 
 export default function RiwayatPesananPage() {
   const [list, setList] = useState<Transaksi[]>([]);
+  const [content, setContent] = useState(getDefaultContent());
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -24,6 +26,14 @@ export default function RiwayatPesananPage() {
           )
         : [],
     );
+
+    setContent(getContent());
+
+    const handleUpdate = () => {
+      setContent(getContent());
+    };
+    window.addEventListener("contentUpdated", handleUpdate);
+    return () => window.removeEventListener("contentUpdated", handleUpdate);
   }, []);
 
   const getStatusBadge = (status?: string) => {
@@ -56,8 +66,8 @@ export default function RiwayatPesananPage() {
       <title>Riwayat Pemesanan | Muara Baru</title>
       <Container className="py-5 mt-4">
         <Title
-          title="Riwayat Pemesanan Pelanggan"
-          sub="Pantau status transaksi dan riwayat pembelian ikan segar Anda."
+          title={content.riwayatTitle}
+          sub={content.riwayatSub}
         />
 
         {list.length === 0 ? (

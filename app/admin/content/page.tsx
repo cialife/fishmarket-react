@@ -108,8 +108,8 @@ export default function AdminContentPage() {
                 className="btn btn-outline-secondary btn-sm rounded-pill"
                 onClick={() => setShowResetModal(true)}
               >
-                <i className="fa-solid fa-rotate-left me-1"></i> Reset Content
-                by Default
+                <i className="fa-solid fa-rotate-left me-1"></i> Reset Konten ke
+                Default
               </button>
             </div>
 
@@ -205,6 +205,54 @@ export default function AdminContentPage() {
               </h5>
               <Form.Group className="mb-3">
                 <Form.Label className="fw-bold">
+                  Judul Utama Hero (About)
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="aboutTitle"
+                  value={content.aboutTitle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Sub-Judul / Slogan Hero
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="aboutSub"
+                  value={content.aboutSub}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Section Perkenalan
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="aboutTitle2"
+                  value={content.aboutTitle2}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Sub-Judul Section Perkenalan
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="aboutSub2"
+                  value={content.aboutSub2}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
                   Judul Section Founder
                 </Form.Label>
                 <Form.Control
@@ -253,7 +301,209 @@ export default function AdminContentPage() {
                   required
                 />
               </Form.Group>
-
+              <h5 className="text-primary fw-bold mb-3 border-bottom pb-2 pt-2">
+                Bagian Katalog Produk
+              </h5>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Utama Hero (Produk)
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="catalogTitle"
+                  value={content.catalogTitle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Sub-Judul / Slogan Hero
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="catalogSub"
+                  value={content.catalogSub}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Section Kumpulan Produk
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="catalogTitle2"
+                  value={content.catalogTitle2}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Sub-Judul Section Kumpulan Produk
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="catalogSub2"
+                  value={content.catalogSub2}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Section Tabel Harga
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="catalogTabelTitle"
+                  value={content.catalogTabelTitle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">Paragraf Deskripsi</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  name="catalogTabelText"
+                  value={content.catalogTabelText}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Section Pesan Ikan
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="catalogPesanTitle"
+                  value={content.catalogPesanTitle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">
+                  Sub-Judul Section Pesan Ikan
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="catalogPesanSub"
+                  value={content.catalogPesanSub}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <h5 className="text-primary fw-bold mb-3 border-bottom pb-2 pt-2">
+                Bagian Pesanan
+              </h5>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Utama Hero (Pesanan)
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="pesananTitle"
+                  value={content.pesananTitle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">
+                  Sub-Judul / Slogan Hero
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="pesananSub"
+                  value={content.pesananSub}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <h5 className="text-primary fw-bold mb-3 border-bottom pb-2 pt-2">
+                Bagian Riwayat Pemesanan
+              </h5>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Utama Hero (Riwayat Pemesanan)
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="riwayatTitle"
+                  value={content.riwayatTitle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">
+                  Sub-Judul / Slogan Hero
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="riwayatSub"
+                  value={content.riwayatSub}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <h5 className="text-primary fw-bold mb-3 border-bottom pb-2 pt-2">
+                Bagian Riwayat Pemesanan
+              </h5>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Utama Hero (Galeri)
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="galeriTitle"
+                  value={content.galeriTitle}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">
+                  Sub-Judul / Slogan Hero
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="galeriSub"
+                  value={content.galeriSub}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">
+                  Judul Section Galeri
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="galeriTitle2"
+                  value={content.galeriTitle2}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">
+                  Sub-Judul Section Galeri
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="galeriSub2"
+                  value={content.galeriSub2}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
               <Button type="submit" className="primary w-100 py-2 fs-5">
                 Simpan Perubahan Konten
               </Button>
@@ -268,7 +518,7 @@ export default function AdminContentPage() {
         message="Apakah Anda yakin ingin menyimpan perubahan konten website ini?"
         confirmText="Ya, Simpan"
         cancelText="Batal"
-        confirmClassName="btn btn-primary"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={confirmSaveContent}
       />
@@ -279,7 +529,7 @@ export default function AdminContentPage() {
         message="Apakah Anda yakin ingin mengembalikan seluruh teks konten ke pengaturan awal (default)?"
         confirmText="Ya, Reset Default"
         cancelText="Batal"
-        confirmClassName="btn btn-danger"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={confirmResetContent}
       />

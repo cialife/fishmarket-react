@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -8,8 +9,8 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const customerAuth = sessionStorage.getItem("customerAuth");
     const adminAuth = sessionStorage.getItem("adminAuth");
+    const user = getCurrentUser();
 
     // halaman login admin
     if (pathname === "/admin/login") {
@@ -33,19 +34,25 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     // login / register pelanggan
     if (pathname === "/login" || pathname === "/register") {
-      if (customerAuth === "true") {
+      if (user) {
+        // Jika akun pelanggan masih ada & aktif, alihkan ke beranda
         router.replace("/");
       } else {
+        // Jika belum login atau akun sudah dihapus, izinkan buka form login
         setAuthorized(true);
       }
       return;
     }
 
-    if (customerAuth !== "true") {
+    const isProtectedCustomerRoute =
+      pathname === "/pesanan" || pathname === "/pesanan/riwayat";
+
+    if (isProtectedCustomerRoute && !user) {
       router.replace("/login");
-    } else {
-      setAuthorized(true);
+      return;
     }
+
+    setAuthorized(true);
   }, [pathname, router]);
 
   if (!authorized) {

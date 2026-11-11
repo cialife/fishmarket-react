@@ -7,7 +7,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-import Alert from 'react-bootstrap/Alert';
+import Alert from "react-bootstrap/Alert";
 import ProductCard from "@/components/ProductCard";
 import InfoRow from "@/components/InfoRow";
 import PriceTable from "@/components/PriceTable";
@@ -15,8 +15,20 @@ import MiniCarousel from "@/components/MiniCarousel";
 import type { ProductItem } from "@/app/data/dataProduct";
 import { getProduk } from "@/lib/produk";
 import { getKategori, KategoriItem } from "@/lib/kategori";
+import { getContent, getDefaultContent } from "@/lib/content";
 
 export default function CatalogPage() {
+  const [content, setContent] = useState(getDefaultContent());
+  useEffect(() => {
+    setContent(getContent());
+
+    const handleUpdate = () => {
+      setContent(getContent());
+    };
+    window.addEventListener("contentUpdated", handleUpdate);
+    return () => window.removeEventListener("contentUpdated", handleUpdate);
+  }, []);
+
   const [products, setProducts] = useState<ProductItem[]>([]);
 
   const [categories, setCategories] = useState<KategoriItem[]>([]);
@@ -61,21 +73,24 @@ export default function CatalogPage() {
   }, [categories, selectedCategory]);
 
   const filteredProducts = useMemo(() => {
-    return products.filter((item) => {
-      const matchesSearch = item.nama.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory =
-        selectedCategory === "Semua" || item.kategori === selectedCategory;
-      return matchesSearch && matchesCategory;
-    })
-    .sort((a, b) => {
-      if  (priceSort === "low-high") return a.harga - b.harga;
-      if (priceSort === "high-low") return b.harga - a.harga;
+    return products
+      .filter((item) => {
+        const matchesSearch = item.nama
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+        const matchesCategory =
+          selectedCategory === "Semua" || item.kategori === selectedCategory;
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        if (priceSort === "low-high") return a.harga - b.harga;
+        if (priceSort === "high-low") return b.harga - a.harga;
 
-      if (a.kategori !== b.kategori) {
-        return a.kategori.localeCompare(b.kategori);
-      }
-      return 0;
-    });
+        if (a.kategori !== b.kategori) {
+          return a.kategori.localeCompare(b.kategori);
+        }
+        return 0;
+      });
   }, [products, searchQuery, selectedCategory, priceSort]);
 
   const handleSuccessAdd = (namaProduk: string) => {
@@ -112,22 +127,19 @@ export default function CatalogPage() {
 
       <Hero
         videoSrc="/videos/catalog.mp4"
-        title="Katalog Produk Pasar Ikan Muara Baru"
-        sub="Nikmati segarnya ikan dari laut"
+        title={content.catalogTitle}
+        sub={content.catalogSub}
         buttonText="Lihat katalog"
         buttonLink="content"
       />
       <div id="content">
-        <Title
-          title="ㆍ Temukan Ikan Terbaik ㆍ"
-          sub="Hasil tangkapan segar dari nelayan setempat, langsung ke meja Anda."
-        ></Title>
+        <Title title={content.catalogTitle2} sub={content.catalogSub2}></Title>
       </div>
       <Container className="container-catalog mb-5">
         <div className="mb-5">
           <InfoRow
-            title="Tabel Harga"
-            text="Kami menyediakan berbagai pilihan ikan segar dan berkualitas yang dipilih dari nelayan lokal dan pemasok terpercaya. Setiap ikan dapat diolah dengan berbagai cara, seperti mentah, dikukus, atau dibakar. Kami berkomitmen menyediakan ikan yang segar, lezat, dan bergizi dengan harga yang terjangkau untuk keluarga maupun restoran."
+            title={content.catalogTabelTitle}
+            text={content.catalogTabelText}
             media={<PriceTable />}
           >
             <MiniCarousel />
@@ -135,8 +147,8 @@ export default function CatalogPage() {
         </div>
         <div className="mb-5">
           <Title
-            title="ㆍ Pesan Ikan Anda ㆍ"
-            sub="Hasil tangkapan segar dari nelayan setempat, langsung ke meja Anda."
+            title={content.catalogPesanTitle}
+            sub={content.catalogPesanSub}
           ></Title>
           <div className="mb-4 p-4 bg-light rounded-4 shadow-sm">
             <Row className="align-items-center g-3">

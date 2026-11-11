@@ -138,7 +138,7 @@ export default function ManageCategoriesPage() {
         title={editId ? "Edit Kategori" : "Tambah Kategori Baru"}
         confirmText="Simpan Kategori"
         cancelText="Batal"
-        confirmClassName="btn btn-primary"
+        confirmClassName="primary"
         cancelClassName="btn btn-secondary"
         onConfirm={handleSubmit}
         message={
@@ -171,7 +171,7 @@ export default function ManageCategoriesPage() {
         message={`Apakah Anda yakin ingin menghapus kategori "${deleteTarget?.nama}"?`}
         confirmText="Ya, Hapus"
         cancelText="Batal"
-        confirmClassName="btn btn-danger"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={confirmDelete}
       />
@@ -182,7 +182,7 @@ export default function ManageCategoriesPage() {
         title="Pemberitahuan"
         message={successMessage}
         confirmText="OK"
-        confirmClassName="btn btn-success"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={() => setShowSuccessModal(false)}
       />

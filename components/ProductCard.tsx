@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Button from "./Button";
 import { ProductItem, PENYAJIAN } from "@/app/data/dataProduct";
 import { addPesanan } from "@/lib/pesanan";
 import { getCurrentUser } from "@/lib/auth";
+import Modal from "@/components/Modal";
+import MODAL from "react-bootstrap/Modal";
 
 type ProductCardProps = ProductItem & {
   onAddSuccess?: () => void;
@@ -40,11 +42,15 @@ function ProductCard({
   const pilihan = PENYAJIAN.find((p) => p.value == penyajian)!;
   const hargaSatuan = harga + pilihan.tambahan;
   const total = hargaSatuan * qty;
+  const router = useRouter();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [perluLogin, setPerluLogin] = useState(false);
 
   const handlePesanan = () => {
     const user = getCurrentUser();
     if (!user) {
-      alert("Silakan login terlebih dahulu untuk memesan.");
+      setPerluLogin(true);
+      handleClose();
       return;
     }
     addPesanan({
@@ -63,6 +69,12 @@ function ProductCard({
       onAddSuccess();
     }
     handleClose();
+  };
+
+  const handleLoginConfirm = () => {
+    console.log("login confirm diklik");
+    setShowLoginModal(false);
+    window.location.href = "/login";
   };
 
   const renderAddTooltip = (props: any) => (
@@ -102,13 +114,22 @@ function ProductCard({
         </Card.Body>
       </Card>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title className="roman text-center w-100 pesan-text">
+      <MODAL
+        show={show}
+        onHide={handleClose}
+        onExited={() => {
+          if (perluLogin) {
+            setPerluLogin(false);
+            setShowLoginModal(true);
+          }
+        }}
+      >
+        <MODAL.Header closeButton>
+          <MODAL.Title className="roman text-center w-100 pesan-text">
             <i className="fa-solid fa-fish" /> {nama}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+          </MODAL.Title>
+        </MODAL.Header>
+        <MODAL.Body>
           <Form>
             <Form.Label className="fw-bold">
               <h5 className="pesan-text">Pilih Penyajian</h5>
@@ -199,8 +220,8 @@ function ProductCard({
             <span>Total</span>
             <span>Rp. {total.toLocaleString("id-ID")}</span>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
+        </MODAL.Body>
+        <MODAL.Footer>
           <OverlayTrigger
             placement="top"
             delay={{ show: 250, hide: 400 }}
@@ -212,8 +233,20 @@ function ProductCard({
               </Button>
             </div>
           </OverlayTrigger>
-        </Modal.Footer>
-      </Modal>
+        </MODAL.Footer>
+      </MODAL>
+
+      <Modal
+        show={showLoginModal}
+        onHide={() => setShowLoginModal(false)}
+        title="Login Diperlukan"
+        message="Silakan login terlebih dahulu untuk memesan."
+        confirmText="Login Sekarang"
+        cancelText="Nanti"
+        confirmClassName="primary"
+        cancelClassName="btn btn-outline-light"
+        onConfirm={handleLoginConfirm}
+      />
     </Container>
   );
 }

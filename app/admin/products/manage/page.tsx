@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card, Table, Button } from "react-bootstrap";
-import { getProduk, deleteProduk } from "@/lib/produk";
+import { getProduk, deleteProduk, resetProduk } from "@/lib/produk";
 import Modal from "@/components/Modal";
 import { open } from "node:inspector/promises";
 
@@ -12,6 +12,7 @@ export default function ManageProducts() {
     id: number;
     nama: string;
   } | null>(null);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   useEffect(() => {
     setProducts(getProduk());
@@ -31,13 +32,26 @@ export default function ManageProducts() {
     setDeleteTarget(null);
   };
 
+  const confirmReset = () => {
+    setProducts(resetProduk());
+    setShowResetModal(false);
+  };
+
   return (
     <>
       <Card className="shadow-sm border-0 rounded-4">
         <Card.Body className="p-4">
           <h4 className="fw-bold mb-4 text-dark">
-            <i className="fa-solid fa-list me-2"></i> Kelola Produk Katalog
+            <i className="fa-solid fa-list me-2"></i>
+            <span className="roman">Kelola Produk Katalog</span>
           </h4>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-sm rounded-pill"
+            onClick={() => setShowResetModal(true)}
+          >
+            <i className="fa-solid fa-rotate-left me-1"></i> Reset Produk Katalog ke Default
+          </button>
           <Table responsive hover className="align-middle">
             <thead className="table-light">
               <tr>
@@ -94,9 +108,20 @@ export default function ManageProducts() {
         message={`Apakah Anda yakin ingin menghapus ikan "${deleteTarget?.nama}" dari katalog?`}
         confirmText="Ya, Hapus"
         cancelText="Batal"
-        confirmClassName="btn btn-danger"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={confirmDelete}
+      />
+
+      <Modal
+        show={showResetModal}
+        onHide={() => setShowResetModal(false)}
+        title="Konfirmasi Reset Produk Katalog"
+        message="Semua perubahan produk katalog akan dihapus dan dikembalikan ke data awal. Lanjutkan?"
+        confirmText="Ya, Reset"
+        cancelText="Batal"
+        confirmClassName="primary"
+        onConfirm={confirmReset}
       />
     </>
   );

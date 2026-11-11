@@ -187,7 +187,7 @@ export default function AddProduct() {
         message={`Produk "${formData.nama}" berhasil ditambahkan ke katalog!`}
         confirmText="Lihat Kelola Produk"
         cancelText="Tutup"
-        confirmClassName="btn btn-success"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={handleModalConfirm}
       />

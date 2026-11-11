@@ -46,3 +46,8 @@ export const deleteProduk = (id: number) => {
   saveProduk(filtered);
   return filtered;
 };
+
+export const resetProduk = () => {
+  saveProduk(productData);
+  return productData;
+};

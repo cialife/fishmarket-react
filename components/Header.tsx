@@ -124,7 +124,7 @@ export default function Header() {
         confirmText="Ya, Logout"
         cancelText="Batal"
         cancelClassName="btn btn-outline-light"
-        confirmClassName="btn btn-danger"
+        confirmClassName="primary"
         onConfirm={handleLogoutConfirm}
       />
     </Navbar>

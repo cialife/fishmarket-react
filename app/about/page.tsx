@@ -29,16 +29,13 @@ export default function AboutPage() {
       <title>Tentang Kami | Muara Baru</title>
       <Hero
         videoSrc="/videos/about.mp4"
-        title="Cerita di Balik Pasar Ikan Muara Baru"
-        sub="Perjalanan menjadi pasar ikan terpercaya."
+        title={content.aboutTitle}
+        sub={content.aboutSub}
         buttonLink="content"
         buttonText="Jelajahi"
       />
       <div className="container container-about" id="content">
-        <Title
-          title="ㆍ Kenali Pasar Ikan Kami ㆍ"
-          sub="Kami percaya hasil laut berkualitas berawal dari kepercayaan, kebersihan, harga jujur, dan penanganan yang baik."
-        ></Title>
+        <Title title={content.aboutTitle2} sub={content.aboutSub2}></Title>
         <Container className="pt-0 pb-5">
           <div className="mb-5">
             <SplitCard

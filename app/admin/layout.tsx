@@ -123,7 +123,7 @@ export default function AdminLayout({
             expand="lg"
             className="border-bottom px-4 shadow-sm py-3"
           >
-            <Navbar.Brand className="fw-bold text-dark">
+            <Navbar.Brand className="fw-bold text-dark roman">
               Dashboard Admin
             </Navbar.Brand>
           </Navbar>
@@ -138,7 +138,7 @@ export default function AdminLayout({
           confirmText="Ya, Logout"
           cancelText="Batal"
           cancelClassName="btn btn-outline-light"
-          confirmClassName="btn btn-danger"
+          confirmClassName="primary"
           onConfirm={handleLogoutConfirm}
         />
       </div>

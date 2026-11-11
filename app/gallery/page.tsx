@@ -8,14 +8,26 @@ import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import { GalleryItem } from "@/app/data/dataGallery";
 import GalleryCard from "@/components/GalleryCard";
 import { getGalleryItems } from "@/lib/gallery";
+import { getContent, getDefaultContent } from "@/lib/content";
 
 export default function Gallery() {
+  const [content, setContent] = useState(getDefaultContent());
+  useEffect(() => {
+      setContent(getContent());
+  
+      const handleUpdate = () => {
+        setContent(getContent());
+      };
+      window.addEventListener("contentUpdated", handleUpdate);
+      return () => window.removeEventListener("contentUpdated", handleUpdate);
+    }, []);
+    
   const [items, setItems] = useState<GalleryItem[]>([]);
   // 2. STATE MANAGEMENT (Penyimpanan Data Dinamis)
   // State 'filter' untuk melacak kategori apa yang sedang aktif (Semua, Foto, atau Video).
   // Nilai default-nya adalah "all".
   const [filter, setFilter] = useState<"all" | "photo" | "video">("all");
-  
+
   // State 'lightboxItem' untuk menyimpan data gambar/video mana yang sedang di-klik.
   // Jika nilainya null, berarti modal (pop-up) sedang tertutup.
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
@@ -25,17 +37,17 @@ export default function Gallery() {
   const handleClose = () => setLightboxItem(null);
 
   useEffect(() => {
-  setItems(getGalleryItems());
-  const handleUpdate = () => setItems(getGalleryItems());
+    setItems(getGalleryItems());
+    const handleUpdate = () => setItems(getGalleryItems());
 
-  window.addEventListener("galleryUpdated", handleUpdate);
-  window.addEventListener("storage", handleUpdate); // sinkron antar tab
+    window.addEventListener("galleryUpdated", handleUpdate);
+    window.addEventListener("storage", handleUpdate); // sinkron antar tab
 
-  return () => {
-    window.removeEventListener("galleryUpdated", handleUpdate);
-    window.removeEventListener("storage", handleUpdate);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("galleryUpdated", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
+  }, []);
   // 4. LOGIKA FILTERING (Penyaringan Data)
   // Sebelum ditampilkan, data asli (galleryData) disaring terlebih dahulu sesuai state 'filter'.
   const filteredData = items.filter((item) => {
@@ -50,8 +62,8 @@ export default function Gallery() {
       {/* BAGIAN HERO: Menampilkan video latar belakang dan judul halaman */}
       <Hero
         videoSrc="/videos/gallery.mp4"
-        title="Galeri Pasar Ikan Modern Muara Baru"
-        sub="Apa saja yang dilakukan di Pasar?"
+        title={content.galeriTitle}
+        sub={content.galeriSub}
         buttonText="Lihat Galeri"
         buttonLink="content"
       />
@@ -59,8 +71,8 @@ export default function Gallery() {
       {/* KONTEN UTAMA: Menggunakan Container agar margin kiri-kanan rapi di tengah */}
       <Container className="my-5" id="content">
         <Title
-          title="Momen yang Terdokumentasi"
-          sub="Keseharian para nelayan lokal dan suasana Pasar Ikan Modern Muara Baru"
+          title={content.galeriTitle2}
+          sub={content.galeriSub2}
         />
 
         <div className="pure-css-gallery">

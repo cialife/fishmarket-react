@@ -682,30 +682,6 @@ footer a {
   font-family: HYWenHei;
 }
 
-.custom-dark-modal .modal-content {
-  background-color: var(--navy-900) !important;
-  color: #ffffff !important;
-  border: none !important;
-  border-radius: 16px !important;
-}
-
-.custom-dark-modal .modal-header,
-.custom-dark-modal .modal-body,
-.custom-dark-modal .modal-footer {
-  background-color: transparent !important;
-  color: #000000 !important;
-  border-color: transparent !important;
-}
-
-.custom-dark-modal .modal-title {
-  color: var(--kuning) !important;
-  font-family: "HYWenHei", Arial, sans-serif !important;
-}
-
-.custom-dark-modal .btn-close {
-  filter: invert(1) grayscale(100%) brightness(200%) !important;
-}
-
 .min-btn {
   color: rgb(173, 0, 66) !important;
   border: 1px solid rgb(173, 0, 66) !important;

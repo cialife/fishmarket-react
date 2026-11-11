@@ -187,7 +187,7 @@ export default function EditProductPage() {
         message={`Produk "${formData.nama}" berhasil diperbarui!`}
         confirmText="Kembali ke Kelola Produk"
         cancelText="Tutup"
-        confirmClassName="btn btn-success"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={handleModalConfirm}
       />

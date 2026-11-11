@@ -26,11 +26,11 @@ export default function ConfirmModal({
   confirmText = "Ya",
   cancelText = "Batal",
   cancelClassName = "btn btn-outline-light",
-  confirmClassName = "btn btn-danger",
-  hideCancel = false,
+  confirmClassName = "primary",
+  hideCancel = true,
 }: ConfirmModalProps) {
   return (
-    <Modal show={show} onHide={onHide} centered className="custom-dark-modal">
+    <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

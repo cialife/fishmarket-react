@@ -12,7 +12,7 @@ import Modal from "@/components/Modal";
 import Title from "@/components/Title";
 import Button from "@/components/Button";
 import { getCurrentUser } from "@/lib/auth";
-
+import { getContent, getDefaultContent } from "@/lib/content";
 import {
   getPesanan,
   deletePesanan,
@@ -28,13 +28,22 @@ export default function PesananPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  
+  const [content, setContent] = useState(getDefaultContent());
+
   useEffect(() => {
     const user = getCurrentUser();
     if (user) {
       setForm((f) => ({ ...f, nama: user.name, email: user.email }));
       setData(getPesanan(user.email));
     }
+
+    setContent(getContent());
+
+    const handleUpdate = () => {
+      setContent(getContent());
+    };
+    window.addEventListener("contentUpdated", handleUpdate);
+    return () => window.removeEventListener("contentUpdated", handleUpdate);
   }, []);
 
   // menyimpan state form saat diketik oleh user (name dari form)
@@ -83,10 +92,7 @@ export default function PesananPage() {
     <>
       <title>Pesanan | Muara Baru</title>
       <Container className="py-5">
-        <Title
-          title="ㆍ Pesanan Anda ㆍ"
-          sub="Silahkan isi form pemesanan dengan lengkap."
-        ></Title>
+        <Title title={content.pesananTitle} sub={content.pesananSub}></Title>
         {isSuccess && (
           <Alert
             message="Pesanan berhasil dikirim! Mengalihkan ke halaman struk..."

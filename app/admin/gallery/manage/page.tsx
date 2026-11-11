@@ -6,12 +6,12 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
-
 import {
   getGalleryItems,
   addGalleryItem,
   updateGalleryItem,
   deleteGalleryItem,
+  resetGalleryItems,
 } from "@/lib/gallery";
 import { GalleryItem } from "@/app/data/dataGallery";
 
@@ -32,6 +32,14 @@ export default function ManageGalleryPage() {
   // State Modal Notifikasi Sukses (Tambah/Edit)
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [showResetModal, setShowResetModal] = useState(false);
+  const confirmReset = () => {
+    setItems(resetGalleryItems());
+    setShowResetModal(false);
+    setSuccessMessage("Galeri berhasil dikembalikan ke data default!");
+    setShowSuccessModal(true);
+  };
 
   const [form, setForm] = useState({
     title: "",
@@ -106,8 +114,16 @@ export default function ManageGalleryPage() {
         <Card.Body className="p-4">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h4 className="fw-bold text-dark mb-0">
-              <i className="fa-solid fa-images me-2"></i> Kelola Galeri
+              <i className="fa-solid fa-images me-2"></i>
+              <span className="roman">Kelola Galeri</span>
             </h4>
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm rounded-pill"
+              onClick={() => setShowResetModal(true)}
+            >
+              <i className="fa-solid fa-rotate-left me-1"></i> Reset Galeri ke Default
+            </button>
             <Button
               onClick={handleOpenAdd}
               className="btn btn-primary rounded-3"
@@ -180,7 +196,7 @@ export default function ManageGalleryPage() {
         title={editId ? "Edit Galeri" : "Tambah Galeri Baru"}
         confirmText="Simpan"
         cancelText="Batal"
-        confirmClassName="btn btn-primary"
+        confirmClassName="primary"
         cancelClassName="btn btn-secondary"
         onConfirm={handleSubmit}
         message={
@@ -250,7 +266,7 @@ export default function ManageGalleryPage() {
         message={`Apakah Anda yakin ingin menghapus galeri "${deleteTarget?.title}"?`}
         confirmText="Ya, Hapus"
         cancelText="Batal"
-        confirmClassName="btn btn-danger"
+        confirmClassName="primary"
         cancelClassName="btn btn-outline-light"
         onConfirm={confirmDelete}
       />
@@ -261,9 +277,20 @@ export default function ManageGalleryPage() {
         title="Berhasil"
         message={successMessage}
         confirmText="OK"
-        confirmClassName="btn btn-success"
+        confirmClassName="primary"
         hideCancel
         onConfirm={() => setShowSuccessModal(false)}
+      />
+
+      <Modal
+        show={showResetModal}
+        onHide={() => setShowResetModal(false)}
+        title="Konfirmasi Reset Galeri"
+        message="Semua perubahan galeri akan dihapus dan dikembalikan ke data awal. Lanjutkan?"
+        confirmText="Ya, Reset"
+        cancelText="Batal"
+        confirmClassName="primary"
+        onConfirm={confirmReset}
       />
     </>
   );

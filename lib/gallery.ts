@@ -52,3 +52,8 @@ export function deleteGalleryItem(id: number) {
   saveGalleryItems(filtered);
   return filtered;
 }
+
+export function resetGalleryItems() {
+  saveGalleryItems(initialData);
+  return initialData;
+}

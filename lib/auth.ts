@@ -44,7 +44,22 @@ export const loginUser = (email: string, pass: string) => {
 export const getCurrentUser = (): Omit<User, "password"> | null => {
   if (typeof window === "undefined") return null;
   try {
-    return JSON.parse(localStorage.getItem("currentUser") || "null");
+    const user = JSON.parse(localStorage.getItem("currentUser") || "null");
+    if (!user) return null;
+
+    // Validasi: Pastikan akun ini benar-benar masih terdaftar di list users
+    const allUsers = getUsers();
+    const exists = allUsers.some(
+      (u) => normalize(u.email) === normalize(user.email)
+    );
+
+    // Jika akun sudah dihapus Admin, otomatis bersihkan sesi login pelanggan
+    if (!exists) {
+      logoutUser();
+      return null;
+    }
+
+    return user;
   } catch {
     return null;
   }
@@ -54,5 +69,18 @@ export const logoutUser = () => {
   localStorage.removeItem("currentUser");
   sessionStorage.removeItem("customerAuth");
   window.dispatchEvent(new Event("pesananUpdated"));
-  
+};
+
+export const deleteUser = (email: string) => {
+  const updated = getUsers().filter(
+    (u) => normalize(u.email) !== normalize(email),
+  );
+  localStorage.setItem("users", JSON.stringify(updated));
+
+  // kalau yang dihapus sedang login, logout-kan juga
+  const current = getCurrentUser();
+  if (current && normalize(current.email) === normalize(email)) {
+    logoutUser();
+  }
+  return updated;
 };

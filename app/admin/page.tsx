@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
 import { Card, Row, Col, Table, Form } from "react-bootstrap";
-import { getUsers } from "@/lib/auth";
+import { getUsers, deleteUser, User } from "@/lib/auth";
 import { getProduk } from "@/lib/produk";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
@@ -39,12 +39,19 @@ export default function AdminDashboard() {
   const [transaksiList, setTransaksiList] = useState<Transaksi[]>([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [targetDeleteId, setTargetDeleteId] = useState<number | null>(null);
+  const [userList, setUserList] = useState<User[]>([]);
+  const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
+  const [targetUser, setTargetUser] = useState<User | null>(null);
 
   useEffect(() => {
+    const users = getUsers().filter((u) => u.role !== "admin");
+    setUserList(users);
+    setTotalUser(users.length);
+    setRecentProducts(getProduk().slice(-4).reverse());
+
     setTotalUser(getUsers().length);
     const allProducts = getProduk();
     setRecentProducts(allProducts.slice(-4).reverse());
-    refreshTransaksi();
     refreshTransaksi();
   }, []);
 
@@ -52,7 +59,7 @@ export default function AdminDashboard() {
     const tList = getTransaksiList();
     setTransaksiList(tList);
     setTotalOrder(tList.length);
-    
+
     const omset = tList.reduce((sum, t) => sum + (t.total || 0), 0);
     setTotalOmset(omset);
   };
@@ -72,8 +79,24 @@ export default function AdminDashboard() {
       deleteTransaksi(targetDeleteId);
       refreshTransaksi();
     }
-      setShowDeleteModal(false);
-      setTargetDeleteId(null);
+    setShowDeleteModal(false);
+    setTargetDeleteId(null);
+  };
+
+  const openDeleteUserModal = (user: User) => {
+    setTargetUser(user);
+    setShowDeleteUserModal(true);
+  };
+
+  const handleDeleteUser = () => {
+    if (targetUser) {
+      deleteUser(targetUser.email);
+      const users = getUsers().filter((u) => u.role !== "admin");
+      setUserList(users);
+      setTotalUser(users.length);
+    }
+    setShowDeleteUserModal(false);
+    setTargetUser(null);
   };
 
   const getStatusBootstrapClass = (status: string) => {
@@ -202,7 +225,7 @@ export default function AdminDashboard() {
         <Col md={8}>
           <Card className="shadow-sm border-0 rounded-4 mb-4 mb-md-0 h-100">
             <Card.Body>
-              <h5 className="fw-bold mb-3 text-dark">Grafik Penjualan</h5>
+              <h5 className="fw-bold mb-3 text-dark roman">Grafik Penjualan</h5>
               <div className="w-100" style={{ height: "280px" }}>
                 <Bar
                   data={chartData}
@@ -221,7 +244,7 @@ export default function AdminDashboard() {
         <Col md={4}>
           <Card className="shadow-sm border-0 rounded-4 h-100">
             <Card.Body>
-              <h5 className="fw-bold mb-3 text-dark">Baru Ditambahkan</h5>
+              <h5 className="fw-bold mb-3 text-dark roman">Baru Ditambahkan</h5>
               <div className="d-flex flex-column gap-3">
                 {recentProducts.map((p) => (
                   <div
@@ -252,8 +275,8 @@ export default function AdminDashboard() {
           <Card className="shadow-sm border-0 rounded-4">
             <Card.Body className="p-4">
               <h5 className="fw-bold mb-3 text-dark">
-                <i className="fa-solid fa-receipt me-2"></i> Daftar Pesanan
-                Masuk
+                <i className="fa-solid fa-receipt me-2"></i>
+                <span className="roman">Daftar Pesanan Masuk</span>
               </h5>
               {transaksiList.length === 0 ? (
                 <p className="text-muted text-center py-3 mb-0">
@@ -374,6 +397,53 @@ export default function AdminDashboard() {
           </Card>
         </Col>
       </Row>
+
+      <Row className="mb-4">
+        <Col xs={12}>
+          <Card className="shadow-sm border-0 rounded-4">
+            <Card.Body className="p-4">
+              <h5 className="fw-bold mb-3 text-dark">
+                <i className="fa-solid fa-users me-2"></i>
+                <span className="roman">Daftar Pelanggan</span>
+              </h5>
+              {userList.length === 0 ? (
+                <p className="text-muted text-center py-3 mb-0">
+                  Belum ada pelanggan terdaftar.
+                </p>
+              ) : (
+                <Table responsive hover className="align-middle mb-0">
+                  <thead className="table-light">
+                    <tr>
+                      <th style={{ width: "60px" }}>No</th>
+                      <th>Nama</th>
+                      <th>Email</th>
+                      <th className="text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userList.map((u, i) => (
+                      <tr key={u.email}>
+                        <td>{i + 1}</td>
+                        <td className="fw-bold">{u.name}</td>
+                        <td>{u.email}</td>
+                        <td className="text-center">
+                          <Button
+                            className="btn btn-danger btn-sm d-inline-flex align-items-center gap-1 px-3 py-1 fw-bold"
+                            onClick={() => openDeleteUserModal(u)}
+                          >
+                            <i className="fa-solid fa-trash me-1"></i> Hapus
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
       <Modal
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
@@ -381,9 +451,21 @@ export default function AdminDashboard() {
         message={`Apakah Anda yakin ingin menghapus pesanan #${targetDeleteId}?`}
         confirmText="Ya, Hapus"
         cancelText="Batal"
-        confirmClassName="btn btn-danger"
-        cancelClassName="btn btn-outline-light"
+        confirmClassName="primary"
+        cancelClassName="btn btn-danger"
         onConfirm={handleDeleteTransaksi}
+      />
+
+      <Modal
+        show={showDeleteUserModal}
+        onHide={() => setShowDeleteUserModal(false)}
+        title="Konfirmasi Hapus Pelanggan"
+        message={`Apakah Anda yakin ingin menghapus pelanggan "${targetUser?.name}" (${targetUser?.email})?`}
+        confirmText="Ya, Hapus"
+        cancelText="Batal"
+        confirmClassName="primary"
+        cancelClassName="btn btn-danger"
+        onConfirm={handleDeleteUser}
       />
     </div>
   );
