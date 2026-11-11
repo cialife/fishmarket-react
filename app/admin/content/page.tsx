@@ -98,8 +98,10 @@ export default function AdminContentPage() {
           <Card.Body className="p-4 p-md-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h4 className="fw-bold text-dark mb-0">
-                <i className="fa-solid fa-pen-to-square me-2"></i> Edit Konten
-                Beranda & Tentang Kami
+                <i className="fa-solid fa-pen-to-square me-2"></i>{" "}
+                <span className="roman">
+                  Edit Konten Beranda & Tentang Kami
+                </span>
               </h4>
               <button
                 type="button"

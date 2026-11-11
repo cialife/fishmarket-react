@@ -46,6 +46,7 @@ export default function LoginPage() {
 
   return (
     <>
+    <title>Login | Muara Baru</title>
       <div className="auth-wrapper">
         <div className="admin-login-box">
           <div className="admin-login-header">

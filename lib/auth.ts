@@ -10,6 +10,7 @@ const normalize = (email: string) => email.trim().toLowerCase();
 export const getUsers = (): User[] => {
   if (typeof window === "undefined") return [];
   try {
+    // KEY USERS
     return JSON.parse(localStorage.getItem("users") || "[]");
   } catch {
     return [];
@@ -36,6 +37,7 @@ export const loginUser = (email: string, pass: string) => {
   // password tidak ikut disimpan sebagai current user
   const { password, ...safeUser } = user;
   localStorage.setItem("currentUser", JSON.stringify(safeUser));
+  window.dispatchEvent(new Event("pesananUpdated"));
   return { success: true, user: safeUser };
 };
 
@@ -51,4 +53,6 @@ export const getCurrentUser = (): Omit<User, "password"> | null => {
 export const logoutUser = () => {
   localStorage.removeItem("currentUser");
   sessionStorage.removeItem("customerAuth");
+  window.dispatchEvent(new Event("pesananUpdated"));
+  
 };

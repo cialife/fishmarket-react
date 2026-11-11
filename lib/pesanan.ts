@@ -2,8 +2,9 @@ import { getProduk } from "@/lib/produk";
 
 export type Pesanan = {
   id: number;
+  email?: string;
   nama: string;
-  src: string;
+  src?: string;
   kategori?: string;
   penyajian: string;
   jumlah: number;
@@ -12,28 +13,44 @@ export type Pesanan = {
   catatan?: string;
 };
 
+// KEY PESANAN
 const KEY = "pesanan";
 
-export function getPesanan(): Pesanan[] {
+function getAllPesanan(): Pesanan[] {
   if (typeof window === "undefined") return [];
-  return JSON.parse(localStorage.getItem(KEY) ?? "[]");
+  try {
+    return JSON.parse(localStorage.getItem(KEY) ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+export function getPesanan(email?: string): Pesanan[] {
+   const all = getAllPesanan();
+   if (!email) return [];
+  return all.filter((p) => p.email?.toLowerCase() === email.toLowerCase());
+
 }
 
 export function addPesanan(p: Pesanan) {
-  const all = getPesanan();
+  const all = getAllPesanan();
   all.push(p);
   localStorage.setItem(KEY, JSON.stringify(all));
+  // langsung sinkronisasi komponen dan tab browser
   window.dispatchEvent(new Event("pesananUpdated"));
 }
 
 export function deletePesanan(id: number) {
-  const sisa = getPesanan().filter((p) => p.id !== id);
+  const sisa = getAllPesanan().filter((p) => p.id !== id);
   localStorage.setItem(KEY, JSON.stringify(sisa));
   window.dispatchEvent(new Event("pesananUpdated"));
 }
 
-export function clearPesanan() {
-  localStorage.removeItem(KEY);
+export function clearPesanan(email: string) {
+  const sisa = getAllPesanan().filter(
+    (p) => p.email?.toLowerCase() !== email.toLowerCase(),
+  );
+  localStorage.setItem(KEY, JSON.stringify(sisa));
   window.dispatchEvent(new Event("pesananUpdated"));
 }
 
@@ -52,6 +69,7 @@ export type Transaksi = {
   status?: string;
 };
 
+// KEY TRANSAKSI
 const KEY_TRANSAKSI = "transaksi";
 
 export function saveTransaksi(t: Transaksi) {
@@ -91,6 +109,7 @@ export function getTransaksiList(): Transaksi[] {
 
 export function getTransaksi(): Transaksi | null {
   const list = getTransaksiList();
+  // Mengambil  transaksi paling depan (terakhir)
   return list.length > 0 ? list[0] : null;
 }
 

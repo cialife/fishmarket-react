@@ -84,8 +84,8 @@ export default function AddProduct() {
         <Card className="shadow-sm border-0 rounded-4">
           <Card.Body className="p-4 p-md-5">
             <h4 className="fw-bold mb-4 text-dark">
-              <i className="fa-solid fa-plus-circle me-2"></i> Tambah Produk
-              Baru
+              <i className="fa-solid fa-plus-circle me-2"></i>
+              <span className="roman">Tambah Produk Baru</span>
             </h4>
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">

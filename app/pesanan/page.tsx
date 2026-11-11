@@ -12,6 +12,7 @@ import Modal from "@/components/Modal";
 import Title from "@/components/Title";
 import Button from "@/components/Button";
 import { getCurrentUser } from "@/lib/auth";
+
 import {
   getPesanan,
   deletePesanan,
@@ -27,15 +28,16 @@ export default function PesananPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-
+  
   useEffect(() => {
-    setData(getPesanan());
     const user = getCurrentUser();
     if (user) {
       setForm((f) => ({ ...f, nama: user.name, email: user.email }));
+      setData(getPesanan(user.email));
     }
   }, []);
 
+  // menyimpan state form saat diketik oleh user (name dari form)
   const ubah = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -46,7 +48,7 @@ export default function PesananPage() {
 
   const handleHapus = (id: number, namaProduk: string) => {
     deletePesanan(id);
-    setData(getPesanan());
+    setData(getPesanan(form.email));
     setDeleteMessage(`Berhasil menghapus "${namaProduk}" dari pesanan.`);
     setTimeout(() => {
       setDeleteMessage("");
@@ -70,7 +72,7 @@ export default function PesananPage() {
       status: "Menunggu",
     });
     setIsSuccess(true);
-    clearPesanan();
+    clearPesanan(form.email);
 
     setTimeout(() => {
       router.push("/struk");

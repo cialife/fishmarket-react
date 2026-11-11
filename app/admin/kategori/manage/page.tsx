@@ -83,7 +83,8 @@ export default function ManageCategoriesPage() {
         <Card.Body className="p-4">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h4 className="fw-bold text-dark mb-0">
-              <i className="fa-solid fa-tags me-2"></i> Kelola Kategori Produk
+              <i className="fa-solid fa-tags me-2"></i>
+              <span className="roman">Kelola Kategori Produk</span>
             </h4>
             <Button
               onClick={handleOpenAdd}
@@ -131,7 +132,6 @@ export default function ManageCategoriesPage() {
         </Card.Body>
       </Card>
 
-      {/* MODAL FORM (TAMBAH / EDIT) */}
       <Modal
         show={showFormModal}
         onHide={() => setShowFormModal(false)}
@@ -164,7 +164,6 @@ export default function ManageCategoriesPage() {
         }
       />
 
-      {/* MODAL ALERT HAPUS */}
       <Modal
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
@@ -177,14 +176,12 @@ export default function ManageCategoriesPage() {
         onConfirm={confirmDelete}
       />
 
-      {/* MODAL ALERT SUKSES */}
       <Modal
         show={showSuccessModal}
         onHide={() => setShowSuccessModal(false)}
         title="Pemberitahuan"
         message={successMessage}
         confirmText="OK"
-        cancelText="Tutup"
         confirmClassName="btn btn-success"
         cancelClassName="btn btn-outline-light"
         onConfirm={() => setShowSuccessModal(false)}

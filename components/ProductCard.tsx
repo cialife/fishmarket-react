@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -12,6 +10,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import Button from "./Button";
 import { ProductItem, PENYAJIAN } from "@/app/data/dataProduct";
 import { addPesanan } from "@/lib/pesanan";
+import { getCurrentUser } from "@/lib/auth";
 
 type ProductCardProps = ProductItem & {
   onAddSuccess?: () => void;
@@ -43,8 +42,14 @@ function ProductCard({
   const total = hargaSatuan * qty;
 
   const handlePesanan = () => {
+    const user = getCurrentUser();
+    if (!user) {
+      alert("Silakan login terlebih dahulu untuk memesan.");
+      return;
+    }
     addPesanan({
       id: Date.now(),
+      email: user.email,
       nama: nama,
       src: src,
       penyajian: pilihan.label,
@@ -99,14 +104,14 @@ function ProductCard({
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="roman text-center w-100">
+          <Modal.Title className="roman text-center w-100 pesan-text">
             <i className="fa-solid fa-fish" /> {nama}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Label className="fw-bold ">
-              <h5>Pilih Penyajian</h5>
+            <Form.Label className="fw-bold">
+              <h5 className="pesan-text">Pilih Penyajian</h5>
             </Form.Label>
             {PENYAJIAN.map((p) => (
               <div

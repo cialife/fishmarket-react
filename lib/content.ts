@@ -23,6 +23,8 @@ export const getDefaultContent = () => ({
 
 export const getContent = () => {
   if (typeof window === "undefined") return getDefaultContent();
+
+  // KEY SITECONTENT
   const data = localStorage.getItem("siteContent");
   if (!data) return getDefaultContent();
   try {

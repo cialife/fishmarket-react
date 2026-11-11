@@ -10,7 +10,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { getPesanan } from "@/lib/pesanan";
 import Badge from "react-bootstrap/Badge";
 import Modal from "@/components/Modal";
-import { logoutUser } from "@/lib/auth";
+import { logoutUser, getCurrentUser } from "@/lib/auth";
 
 export default function Header() {
   const [showProduk, setShowProduk] = useState(false);
@@ -21,7 +21,8 @@ export default function Header() {
 
   useEffect(() => {
     const updatePesanan = () => {
-      setJumlahPesanan(getPesanan().length);
+      const user = getCurrentUser();
+      setJumlahPesanan(user ? getPesanan(user.email).length : 0);
     };
     updatePesanan();
 

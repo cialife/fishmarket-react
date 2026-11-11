@@ -3,6 +3,7 @@ import {
   GalleryItem,
 } from "@/app/data/dataGallery";
 
+// KEY GALLERY
 const KEY_GALLERY = "gallery_data";
 
 export function getGalleryItems(): GalleryItem[] {

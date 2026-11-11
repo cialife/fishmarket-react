@@ -3,6 +3,7 @@ export type KategoriItem = {
   nama: string;
 };
 
+// KEY KATEGORI
 const KEY_KATEGORI = "categories_data";
 
 export const DEFAULT_KATEGORI: KategoriItem[] = [

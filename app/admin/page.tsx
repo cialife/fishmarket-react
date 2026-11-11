@@ -52,6 +52,7 @@ export default function AdminDashboard() {
     const tList = getTransaksiList();
     setTransaksiList(tList);
     setTotalOrder(tList.length);
+    
     const omset = tList.reduce((sum, t) => sum + (t.total || 0), 0);
     setTotalOmset(omset);
   };

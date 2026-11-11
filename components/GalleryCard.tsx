@@ -58,7 +58,7 @@ export default function GalleryCard({ item, onSelect }: GalleryCardProps) {
       </div>
 
       <Card.Body className="text-center bg-white py-3">
-        <Card.Title className="fw-bold text-dark fs-5 mb-1 roman">
+        <Card.Title className="fw-bold text-dark fs-5 mb-1 roman gallery-title">
           {item.title}
         </Card.Title>
         <Card.Text className="text-muted small mb-0">{item.desc}</Card.Text>
