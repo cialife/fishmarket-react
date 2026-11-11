@@ -261,9 +261,8 @@ export default function ManageGalleryPage() {
         title="Berhasil"
         message={successMessage}
         confirmText="OK"
-        cancelText="Tutup"
         confirmClassName="btn btn-success"
-        cancelClassName="btn btn-outline-light"
+        hideCancel
         onConfirm={() => setShowSuccessModal(false)}
       />
     </>
