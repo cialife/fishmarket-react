@@ -13,6 +13,7 @@ interface ConfirmModalProps {
   cancelText?: string;
   cancelClassName?: string;
   confirmClassName?: string;
+  hideCancel?: boolean;
   onConfirm: () => void;
 }
 
@@ -26,6 +27,7 @@ export default function ConfirmModal({
   cancelText = "Batal",
   cancelClassName = "btn btn-outline-light",
   confirmClassName = "btn btn-danger",
+  hideCancel = false,
 }: ConfirmModalProps) {
   return (
     <Modal show={show} onHide={onHide} centered className="custom-dark-modal">
@@ -34,9 +36,11 @@ export default function ConfirmModal({
       </Modal.Header>
       <Modal.Body>{message}</Modal.Body>
       <Modal.Footer>
-        <Button className={cancelClassName} onClick={onHide}>
-          {cancelText}
-        </Button>
+        {!hideCancel && (
+          <Button className={cancelClassName} onClick={onHide}>
+            {cancelText}
+          </Button>
+        )}
         <Button className={confirmClassName} onClick={onConfirm}>
           {confirmText}
         </Button>

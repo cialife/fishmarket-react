@@ -486,6 +486,11 @@ footer a {
 .zoom-badge i {
   font-size: 16px !important;
   color: rgb(248, 255, 116) !important;
+  transition: color 0.3s ease;
+}
+
+.zoom-badge:hover i {
+  color: var(--navy-900) !important;
 }
 
 .admin-wrapper {

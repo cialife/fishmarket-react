@@ -5,7 +5,7 @@ import Hero from "@/components/Hero";
 import Title from "@/components/Title";
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
-import { galleryData, GalleryItem } from "@/app/data/dataGallery";
+import { GalleryItem } from "@/app/data/dataGallery";
 import GalleryCard from "@/components/GalleryCard";
 import { getGalleryItems } from "@/lib/gallery";
 
@@ -25,16 +25,22 @@ export default function Gallery() {
   const handleClose = () => setLightboxItem(null);
 
   useEffect(() => {
-    setItems(getGalleryItems());
-    const handleUpdate = () => setItems(getGalleryItems());
-    window.addEventListener("galleryUpdated", handleUpdate);
-    return () => window.removeEventListener("galleryUpdated", handleUpdate);
-  }, [])
+  setItems(getGalleryItems());
+  const handleUpdate = () => setItems(getGalleryItems());
+
+  window.addEventListener("galleryUpdated", handleUpdate);
+  window.addEventListener("storage", handleUpdate); // sinkron antar tab
+
+  return () => {
+    window.removeEventListener("galleryUpdated", handleUpdate);
+    window.removeEventListener("storage", handleUpdate);
+  };
+}, []);
   // 4. LOGIKA FILTERING (Penyaringan Data)
   // Sebelum ditampilkan, data asli (galleryData) disaring terlebih dahulu sesuai state 'filter'.
-  const filteredData = galleryData.filter((item) => {
+  const filteredData = items.filter((item) => {
     if (filter === "all") return true; // Jika "all", tampilkan semua data
-    return item.type === filter;       // Jika tidak, cocokkan tipe data dengan filter aktif
+    return item.type === filter; // Jika tidak, cocokkan tipe data dengan filter aktif
   });
 
   // 5. RENDER UI (Tampilan Layar)

@@ -1,7 +1,9 @@
 "use client";
-import { Nav, Navbar, Button as BootstrapButton, Modal } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Modal from "@/components/Modal";
+import Button from "@/components/Button";
 import Link from "next/link";
 
 export default function AdminLayout({
@@ -106,13 +108,12 @@ export default function AdminLayout({
             >
               <i className="fa-solid fa-globe me-2"></i> Ke Website
             </Link>
-            <BootstrapButton
-              variant="danger"
-              className="w-100 rounded-3"
+            <Button
+              className="btn btn-danger w-100 rounded-3"
               onClick={() => setShowModal(true)}
             >
               <i className="fa-solid fa-right-from-bracket me-2"></i> Logout
-            </BootstrapButton>
+            </Button>
           </div>
         </div>
 
