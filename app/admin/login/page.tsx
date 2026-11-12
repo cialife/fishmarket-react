@@ -48,6 +48,7 @@ export default function AdminLoginPage() {
   
   return (
     <>
+    <title>Login Admin | Muara Baru</title>
       <div className="auth-wrapper">
         <div className="admin-login-box">
           <div className="admin-login-header">
@@ -57,7 +58,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="p-4 p-md-5">
-            <h4 className="fw-bold text-center mb-4 text-dark">
+            <h4 className="fw-bold text-center mb-4 text-dark roman">
               Masuk Dashboard
             </h4>
             <form onSubmit={handleLogin}>

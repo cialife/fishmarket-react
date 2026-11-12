@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
-import { Card, Row, Col, Table, Form } from "react-bootstrap";
+import { Card, Row, Col, Table, Dropdown } from "react-bootstrap";
 import { getUsers, deleteUser, User } from "@/lib/auth";
 import { getProduk } from "@/lib/produk";
 import Button from "@/components/Button";
@@ -30,6 +30,14 @@ ChartJS.register(
   Tooltip,
   Legend,
 );
+
+const STATUS_LIST = [
+  "Menunggu",
+  "Diproses",
+  "Dikirim",
+  "Selesai",
+  "Dibatalkan",
+];
 
 export default function AdminDashboard() {
   const [totalUser, setTotalUser] = useState(0);
@@ -102,17 +110,17 @@ export default function AdminDashboard() {
   const getStatusBootstrapClass = (status: string) => {
     switch (status) {
       case "Menunggu":
-        return "bg-warning text-dark";
+        return "status-menunggu";
       case "Diproses":
-        return "bg-info text-dark";
+        return "status-diproses";
       case "Dikirim":
-        return "bg-primary text-white";
+        return "status-dikirim";
       case "Selesai":
-        return "bg-success text-white";
+        return "status-selesai";
       case "Dibatalkan":
-        return "bg-danger text-white";
+        return "status-dibatalkan";
       default:
-        return "bg-light text-dark";
+        return "status-menunggu";
     }
   };
 
@@ -291,7 +299,9 @@ export default function AdminDashboard() {
                       <th>Menu / Produk Dipilih</th>
                       <th>Harga Satuan</th>
                       <th>Total Pembayaran</th>
-                      <th className="text-center">Status</th>
+                      <th className="text-center" style={{ minWidth: "140px" }}>
+                        Status
+                      </th>
                       <th className="text-center">Aksi</th>
                     </tr>
                   </thead>
@@ -339,45 +349,35 @@ export default function AdminDashboard() {
                             Rp {(t.total || 0).toLocaleString("id-ID")}
                           </td>
                           <td className="text-center">
-                            <Form.Select
-                              size="sm"
-                              value={currentStatus}
-                              onChange={(e) =>
-                                handleStatusChange(t.id, e.target.value)
+                            <Dropdown
+                              onSelect={(val) =>
+                                val && handleStatusChange(t.id, val)
                               }
-                              className={`fw-bold text-center ps-4 shadow-sm ${getStatusBootstrapClass(currentStatus)}`}
                             >
-                              <option
-                                value="Menunggu"
-                                className="bg-light text-center ps-0 text-dark"
+                              <Dropdown.Toggle
+                                variant="light"
+                                size="sm"
+                                className={`status-toggle fw-bold shadow-sm ${getStatusBootstrapClass(currentStatus)}`}
                               >
-                                Menunggu
-                              </option>
-                              <option
-                                value="Diproses"
-                                className="bg-light text-center ps-0 text-dark"
+                                {currentStatus}
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu
+                                className="status-menu"
+                                renderOnMount
+                                popperConfig={{ strategy: "fixed" }}
                               >
-                                Diproses
-                              </option>
-                              <option
-                                value="Dikirim"
-                                className="bg-light text-center ps-0 text-dark"
-                              >
-                                Dikirim
-                              </option>
-                              <option
-                                value="Selesai"
-                                className="bg-light text-center ps-0 text-dark"
-                              >
-                                Selesai
-                              </option>
-                              <option
-                                value="Dibatalkan"
-                                className="bg-light text-center ps-0 text-dark"
-                              >
-                                Dibatalkan
-                              </option>
-                            </Form.Select>
+                                {STATUS_LIST.map((s) => (
+                                  <Dropdown.Item
+                                    key={s}
+                                    eventKey={s}
+                                    active={s === currentStatus}
+                                    className="text-center"
+                                  >
+                                    {s}
+                                  </Dropdown.Item>
+                                ))}
+                              </Dropdown.Menu>
+                            </Dropdown>
                           </td>
                           <td className="text-center">
                             <Button
