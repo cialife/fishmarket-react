@@ -117,19 +117,22 @@ export default function ManageGalleryPage() {
               <i className="fa-solid fa-images me-2"></i>
               <span className="roman">Kelola Galeri</span>
             </h4>
-            <button
-              type="button"
-              className="btn btn-outline-secondary btn-sm rounded-pill"
-              onClick={() => setShowResetModal(true)}
-            >
-              <i className="fa-solid fa-rotate-left me-1"></i> Reset Galeri ke Default
-            </button>
-            <Button
-              onClick={handleOpenAdd}
-              className="btn btn-primary rounded-3"
-            >
-              <i className="fa-solid fa-plus me-1"></i> Tambah Galeri
-            </Button>
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm rounded-pill"
+                onClick={() => setShowResetModal(true)}
+              >
+                <i className="fa-solid fa-rotate-left me-1"></i> Reset Galeri ke
+                Default
+              </button>
+              <Button
+                onClick={handleOpenAdd}
+                className="btn btn-primary rounded-3"
+              >
+                <i className="fa-solid fa-plus me-1"></i> Tambah Galeri
+              </Button>
+            </div>
           </div>
 
           <Table responsive hover className="align-middle">

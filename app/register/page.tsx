@@ -61,7 +61,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="p-4 p-md-5">
-            <h4 className="fw-bold text-center mb-4 text-dark">
+            <h4 className="fw-bold text-center mb-4 text-dark roman">
               Daftar Pelanggan
             </h4>
             <form onSubmit={handleRegister}>

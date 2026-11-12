@@ -34,6 +34,20 @@ export default function EditProductPage() {
     };
   }, []);
 
+  useEffect(() => {
+    const produk = getProdukById(id);
+    if (produk) {
+      setFormData({
+        nama: produk.nama,
+        kategori: produk.kategori,
+        harga: String(produk.harga),
+        desc: produk.desc,
+      });
+      // foto lama tampil sebagai preview
+      setImage64(produk.src);
+    }
+  }, [id]);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement

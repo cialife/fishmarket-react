@@ -22,7 +22,6 @@ export default function LoginPage() {
     e.preventDefault();
     const result = loginUser(email, password);
     if (result.success) {
-      sessionStorage.setItem("customerAuth", "true");
       setAlertModal({
         show: true,
         title: "Berhasil",
@@ -59,7 +58,7 @@ export default function LoginPage() {
           </div>
 
           <div className="p-4 p-md-5">
-            <h4 className="fw-bold text-center mb-4 text-dark">
+            <h4 className="fw-bold text-center mb-4 text-dark roman">
               Masuk Pelanggan
             </h4>
             <form onSubmit={handleLogin}>

@@ -1,3 +1,5 @@
+import { deletePesananByEmail } from "@/lib/pesanan";
+
 export type User = {
   name: string;
   email: string;
@@ -37,6 +39,7 @@ export const loginUser = (email: string, pass: string) => {
   // password tidak ikut disimpan sebagai current user
   const { password, ...safeUser } = user;
   localStorage.setItem("currentUser", JSON.stringify(safeUser));
+  sessionStorage.setItem("customerAuth", "true");
   window.dispatchEvent(new Event("pesananUpdated"));
   return { success: true, user: safeUser };
 };
@@ -44,21 +47,22 @@ export const loginUser = (email: string, pass: string) => {
 export const getCurrentUser = (): Omit<User, "password"> | null => {
   if (typeof window === "undefined") return null;
   try {
+    // sesi browser sudah berakhir -> dianggap belum login
+    if (sessionStorage.getItem("customerAuth") !== "true") return null;
+
     const user = JSON.parse(localStorage.getItem("currentUser") || "null");
     if (!user) return null;
 
     // Validasi: Pastikan akun ini benar-benar masih terdaftar di list users
-    const allUsers = getUsers();
-    const exists = allUsers.some(
-      (u) => normalize(u.email) === normalize(user.email)
+    const exists = getUsers().some(
+      (u) => normalize(u.email) === normalize(user.email),
     );
 
-    // Jika akun sudah dihapus Admin, otomatis bersihkan sesi login pelanggan
+    // Akun sudah dihapus admin -> anggap belum login.
+    // Pembersihan sesi dilakukan AuthGuard setelah alert ditampilkan.
     if (!exists) {
-      logoutUser();
       return null;
     }
-
     return user;
   } catch {
     return null;
@@ -71,16 +75,25 @@ export const logoutUser = () => {
   window.dispatchEvent(new Event("pesananUpdated"));
 };
 
+export const isAccountDeleted = (): boolean => {
+  if (typeof window === "undefined") return false;
+  try {
+    if (sessionStorage.getItem("customerAuth") !== "true") return false;
+    const cur = JSON.parse(localStorage.getItem("currentUser") || "null");
+    if (!cur) return false;
+    return !getUsers().some((u) => normalize(u.email) === normalize(cur.email));
+  } catch {
+    return false;
+  }
+};
+
 export const deleteUser = (email: string) => {
   const updated = getUsers().filter(
     (u) => normalize(u.email) !== normalize(email),
   );
-  localStorage.setItem("users", JSON.stringify(updated));
 
-  // kalau yang dihapus sedang login, logout-kan juga
-  const current = getCurrentUser();
-  if (current && normalize(current.email) === normalize(email)) {
-    logoutUser();
-  }
+  localStorage.setItem("users", JSON.stringify(updated));
+  // hapus keranjang pesanan dan riwayat akun yang dihapus
+  deletePesananByEmail(email);
   return updated;
 };

@@ -102,7 +102,7 @@ function ProductCard({
         <Card.Body>
           <p className="text-muted">{kategori}</p>
           <Card.Title className="product-name roman">{nama}</Card.Title>
-          <p className="text-muted">{desc}</p>
+          <p className="text-muted text-justify">{desc}</p>
           <p className="fw-bold product-price">
             Rp {harga.toLocaleString("id-ID")}/kg
           </p>

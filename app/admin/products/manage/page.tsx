@@ -41,17 +41,22 @@ export default function ManageProducts() {
     <>
       <Card className="shadow-sm border-0 rounded-4">
         <Card.Body className="p-4">
-          <h4 className="fw-bold mb-4 text-dark">
-            <i className="fa-solid fa-list me-2"></i>
-            <span className="roman">Kelola Produk Katalog</span>
-          </h4>
-          <button
-            type="button"
-            className="btn btn-outline-secondary btn-sm rounded-pill"
-            onClick={() => setShowResetModal(true)}
-          >
-            <i className="fa-solid fa-rotate-left me-1"></i> Reset Produk Katalog ke Default
-          </button>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h4 className="fw-bold mb-0 text-dark">
+              <i className="fa-solid fa-list me-2"></i>
+              <span className="roman">Kelola Produk Katalog</span>
+            </h4>
+            <div className="d-flex gap-2">
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm rounded-pill"
+                onClick={() => setShowResetModal(true)}
+              >
+                <i className="fa-solid fa-rotate-left me-1"></i> Reset Produk
+                Katalog ke Default
+              </button>
+            </div>
+          </div>
           <Table responsive hover className="align-middle">
             <thead className="table-light">
               <tr>
@@ -72,8 +77,17 @@ export default function ManageProducts() {
                   <td className="fw-bold">{p.nama}</td>
                   <td>{p.kategori}</td>
                   <td>Rp {p.harga.toLocaleString("id-ID")}</td>
-                  <td>
-                    <span className="text-muted text-truncate d-inline-block">
+                  <td
+                    className="text-muted"
+                    style={{
+                      maxWidth: "300px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      textAlign: "justify",
+                      lineHeight: "1.5",
+                    }}
+                  >
+                    <span className="text-muted d-inline-block">
                       {p.desc || "-"}
                     </span>
                   </td>

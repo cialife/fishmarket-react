@@ -26,10 +26,9 @@ function getAllPesanan(): Pesanan[] {
 }
 
 export function getPesanan(email?: string): Pesanan[] {
-   const all = getAllPesanan();
-   if (!email) return [];
+  const all = getAllPesanan();
+  if (!email) return [];
   return all.filter((p) => p.email?.toLowerCase() === email.toLowerCase());
-
 }
 
 export function addPesanan(p: Pesanan) {
@@ -67,6 +66,8 @@ export type Transaksi = {
   items: Pesanan[];
   total: number;
   status?: string;
+  // true jika akun pelanggan sudah dihapus oleh admin
+  akunDihapus?: boolean;
 };
 
 // KEY TRANSAKSI
@@ -129,3 +130,22 @@ export function deleteTransaksi(id: number) {
   localStorage.setItem(KEY_TRANSAKSI, JSON.stringify(filtered));
   window.dispatchEvent(new Event("pesananUpdated"));
 }
+
+export const deletePesananByEmail = (email: string) => {
+  if (typeof window === "undefined") return;
+  const e = email.trim().toLowerCase();
+
+  // keranjang pesanan akun ini
+  const sisaPesanan = getAllPesanan().filter(
+    (p) => p.email?.toLowerCase() !== e,
+  );
+  localStorage.setItem(KEY, JSON.stringify(sisaPesanan));
+
+  // riwayat transaksi akun ini
+  const sisaTransaksi = getTransaksiList().filter(
+    (t) => t.pemesan?.email?.toLowerCase() !== e ? { ...t, akunDihapus: true} : t,
+  );
+  localStorage.setItem(KEY_TRANSAKSI, JSON.stringify(sisaTransaksi));
+
+  window.dispatchEvent(new Event("pesananUpdated"));
+};

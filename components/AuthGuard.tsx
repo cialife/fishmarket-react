@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, isAccountDeleted, logoutUser } from "@/lib/auth";
+import Modal from "@/components/Modal";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [authorized, setAuthorized] = useState(false);
+  const [showDeleted, setShowDeleted] = useState(false);
 
   useEffect(() => {
     const adminAuth = sessionStorage.getItem("adminAuth");
@@ -44,10 +46,10 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const isProtectedCustomerRoute =
-      pathname === "/pesanan" || pathname === "/pesanan/riwayat";
-
-    if (isProtectedCustomerRoute && !user) {
+    // semua halaman pelanggan lain wajib login
+    if (!user) {
+      // cegah halaman sempat terlihat sebelum redirect
+      setAuthorized(false);
       router.replace("/login");
       return;
     }
@@ -55,9 +57,47 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     setAuthorized(true);
   }, [pathname, router]);
 
-  if (!authorized) {
-    return null;
-  }
+  useEffect(() => {
+    if (pathname.startsWith("/admin")) return;
+    const check = () => {
+      if (isAccountDeleted()) setShowDeleted(true);
+    };
+    check();
+    window.addEventListener("storage", check);
+    window.addEventListener("focus", check);
+    const timer = setInterval(check, 3000);
+    return () => {
+      window.removeEventListener("storage", check);
+      window.removeEventListener("focus", check);
+      clearInterval(timer);
+    };
+  }, [pathname]);
 
-  return <>{children}</>;
+  const handleDeletedConfirm = () => {
+    setShowDeleted(false);
+    logoutUser();
+    router.replace("/login");
+  };
+
+  const deletedModal = (
+    <Modal
+      show={showDeleted}
+      onHide={handleDeletedConfirm}
+      title="Akun Dihapus"
+      message="Sesi Anda Berakhir. Silakan login kembali."
+      confirmText="OK"
+      confirmClassName="primary"
+      hideCancel
+      onConfirm={handleDeletedConfirm}
+    />
+  );
+
+  // bagian return paling bawah:
+  if (!authorized) return deletedModal;
+  return (
+    <>
+      {children}
+      {deletedModal}
+    </>
+  );
 }

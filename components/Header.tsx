@@ -51,7 +51,7 @@ export default function Header() {
   return (
     <Navbar fixed="top" expand="lg" className="navbar-custom">
       <Container fluid className="px-4 px-lg-5">
-        <Navbar.Brand as={Link} href="/home">
+        <Navbar.Brand as={Link} href="/">
           <i className="fa-solid fa-fish" /> Muara Baru
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

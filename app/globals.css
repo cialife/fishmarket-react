@@ -248,6 +248,10 @@ a {
   font-family: HYwenHei;
 }
 
+.text-justify {
+  text-align: justify;
+}
+
 .container-home .image {
   width: 100%;
   height: 215px;

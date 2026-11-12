@@ -48,6 +48,8 @@ export const deleteProduk = (id: number) => {
 };
 
 export const resetProduk = () => {
-  saveProduk(productData);
-  return productData;
+  localStorage.removeItem("products");
+  const fresh = productData.map((p) => ({ ...p }));
+  saveProduk(fresh);
+  return fresh;
 };
