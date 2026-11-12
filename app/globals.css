@@ -480,6 +480,20 @@ footer a {
   border-radius: 8px;
 }
 
+.admin-main {
+  min-width: 0;
+}
+
+.admin-offcanvas {
+  --bs-offcanvas-width: 260px;
+  --bs-offcanvas-bg: var(--navy-900);
+  --bs-offcanvas-color: var(--biru-muda);
+}
+
+.admin-offcanvas .btn-close {
+  filter: invert(1);
+}
+
 .img-thumb-md {
   width: 60px !important;
   height: 60px !important;

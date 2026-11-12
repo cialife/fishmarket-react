@@ -19,7 +19,7 @@ export const productData: ProductItem[] = [
     nama: "Kembung",
     kategori: "Ikan Air Asin",
     harga: 35000,
-    desc: "Ikan laut kaya Omega-3 dengan tekstur daging lembut dan gurih alami. Sangat pas diolah dengan cara dibakar maupun dikukus bumbu rempah.",
+    desc: "Daging lembut, gurih alami, dan kaya Omega-3.",
     src: "/images/product/kembung.png",
   },
   {
@@ -27,7 +27,7 @@ export const productData: ProductItem[] = [
     nama: "Tongkol",
     kategori: "Ikan Air Asin",
     harga: 25000,
-    desc: "Memiliki tekstur daging yang padat, tebal, dan bercita rasa gurih khas. Tidak mudah hancur saat dimasak, cocok untuk hidangan bakar bumbu pedas manis.",
+    desc: "Daging padat, tebal, dan gurih meresap bumbu.",
     src: "/images/product/tongkol.png",
   },
   {
@@ -35,7 +35,7 @@ export const productData: ProductItem[] = [
     nama: "Cakalang",
     kategori: "Ikan Air Asin",
     harga: 17000,
-    desc: "Ikan laut dengan serat daging yang kokoh dan aroma gurih yang kuat. Nikmat disajikan sebagai hidangan bakar rica maupun dikukus.",
+    desc: "Serat daging kokoh dengan cita rasa gurih khas.",
     src: "/images/product/cakalang.png",
   },
   {
@@ -43,7 +43,7 @@ export const productData: ProductItem[] = [
     nama: "Layang",
     kategori: "Ikan Air Asin",
     harga: 30000,
-    desc: "Ikan berdaging lembut dengan perpaduan rasa gurih dan sedikit manis yang lezat. Pilihan favorit keluarga yang nikmat dibakar atau dikukus.",
+    desc: "Daging lembut dengan rasa gurih dan sedikit manis.",
     src: "/images/product/layang.png",
   },
   {
@@ -51,7 +51,7 @@ export const productData: ProductItem[] = [
     nama: "Kakap",
     kategori: "Ikan Air Asin",
     harga: 70000,
-    desc: "Ikan laut premium berdaging putih tebal, lembut, dan manis alami tanpa bau amis. Istimewa untuk sajian ikan bakar maupun kukus tim.",
+    desc: "Ikan laut premium berdaging putih tebal dan lembut.",
     src: "/images/product/kakap.png",
   },
   {
@@ -59,7 +59,7 @@ export const productData: ProductItem[] = [
     nama: "Tenggiri",
     kategori: "Ikan Air Asin",
     harga: 65000,
-    desc: "Memiliki daging putih yang tebal, halus, dan gurih dengan duri yang mudah dipisahkan. Sangat lezat dibakar, dikukus, maupun dijadikan bahan olahan.",
+    desc: "Daging putih halus, tebal, dan minim duri halus.",
     src: "/images/product/tenggiri.png",
   },
   {
@@ -67,7 +67,7 @@ export const productData: ProductItem[] = [
     nama: "Patin",
     kategori: "Ikan Air Tawar",
     harga: 30000,
-    desc: "Ikan air tawar dengan tekstur daging super lembut, juicy, dan gurih tanpa duri halus. Sangat cocok dikukus kuah segar atau dibakar bumbu kecap.",
+    desc: "Daging super lembut, juicy, dan tanpa duri halus.",
     src: "/images/product/patin.jpg",
   },
   {
@@ -75,7 +75,7 @@ export const productData: ProductItem[] = [
     nama: "Bawal",
     kategori: "Ikan Air Tawar",
     harga: 65000,
-    desc: "Berdaging tebal dengan tekstur kenyal lembut dan rasa gurih yang kaya. Salah satu pilihan terbaik untuk sajian ikan bakar maupun kukus.",
+    desc: "Berdaging tebal dengan tekstur kenyal lembut dan gurih.",
     src: "/images/product/bawal.jpg",
   },
   {
@@ -83,7 +83,7 @@ export const productData: ProductItem[] = [
     nama: "Mujair",
     kategori: "Ikan Air Tawar",
     harga: 30000,
-    desc: "Ikan air tawar segar dengan daging gurih dan rasa manis alami yang ringan. Pas dinikmati dengan olahan bakar sambal kecap maupun dikukus.",
+    desc: "Daging segar, gurih, dengan rasa manis alami.",
     src: "/images/product/mujair.png",
   },
   {
@@ -91,7 +91,7 @@ export const productData: ProductItem[] = [
     nama: "Lele",
     kategori: "Ikan Air Tawar",
     harga: 28000,
-    desc: "Memiliki daging yang empuk, gurih, dan meresap bumbu dengan sempurna. Sangat nikmat disajikan hangat sebagai lele bakar maupun olahan segar lainnya.",
+    desc: "Daging empuk, gurih, dan sangat pas dibakar bumbu.",
     src: "/images/product/lele.jpg",
   },
   {
@@ -99,7 +99,7 @@ export const productData: ProductItem[] = [
     nama: "Nila",
     kategori: "Ikan Air Tawar",
     harga: 32000,
-    desc: "Ikan air tawar segar dengan daging putih bersih, lembut, dan manis tanpa bau tanah. Favorit untuk menu nila bakar madu atau dikukus.",
+    desc: "Daging putih bersih, manis alami, dan bebas bau tanah.",
     src: "/images/product/nila.jpg",
   },
   {
@@ -107,7 +107,7 @@ export const productData: ProductItem[] = [
     nama: "Gurami",
     kategori: "Ikan Air Tawar",
     harga: 50000,
-    desc: "Ikan air tawar unggulan berdaging tebal, lembut, dan manis dengan duri besar yang mudah dipisahkan. Sempurna untuk sajian bakar maupun tim kukus.",
+    desc: "Daging tebal, lembut, dan manis dengan duri besar.",
     src: "/images/product/gurami.png",
   },
 ];

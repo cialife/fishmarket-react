@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import { getPesanan } from "@/lib/pesanan";
 import Badge from "react-bootstrap/Badge";
 import Modal from "@/components/Modal";
@@ -18,6 +18,20 @@ export default function Header() {
   const router = useRouter();
   const [jumlahPesanan, setJumlahPesanan] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  // tutup menu burger saat halaman di-scroll
+  useEffect(() => {
+    if (!expanded) return;
+    const close = () => setExpanded(false);
+    window.addEventListener("scroll", close, { passive: true });
+    return () => window.removeEventListener("scroll", close);
+  }, [expanded]);
+
+  // tutup menu burger saat pindah halaman
+  useEffect(() => {
+    setExpanded(false);
+  }, [pathname]);
 
   useEffect(() => {
     const updatePesanan = () => {
@@ -49,7 +63,15 @@ export default function Header() {
   };
 
   return (
-    <Navbar fixed="top" expand="lg" className="navbar-custom">
+    <Navbar
+      fixed="top"
+      expand="lg"
+      className="navbar-custom"
+      data-bs-theme="dark"
+      expanded={expanded}
+      onToggle={(isOpen) => setExpanded(isOpen)}
+      onSelect={() => setExpanded(false)}
+    >
       <Container fluid className="px-4 px-lg-5">
         <Navbar.Brand as={Link} href="/">
           <i className="fa-solid fa-fish" /> Muara Baru
