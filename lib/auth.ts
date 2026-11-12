@@ -22,17 +22,28 @@ export const getUsers = (): User[] => {
 export const registerUser = (userData: User) => {
   const users = getUsers();
   const email = normalize(userData.email);
+  const name = userData.name.trim();
+  const password = userData.password?.trim() ?? "";
+
+  if (!name || !password) {
+    return { success: false, message: "Nama dan password tidak boleh kosong!" };
+  }
+
   if (users.some((u) => normalize(u.email) === email)) {
     return { success: false, message: "Email sudah terdaftar!" };
   }
-  users.push({ ...userData, email, name: userData.name.trim() });
+  users.push({ ...userData, email, name, password });
   localStorage.setItem("users", JSON.stringify(users));
   return { success: true };
 };
 
 export const loginUser = (email: string, pass: string) => {
+  const cleanPass = pass.trim();
+
   const user = getUsers().find(
-    (u) => normalize(u.email) === normalize(email) && u.password === pass,
+    (u) =>
+      normalize(u.email) === normalize(email) &&
+      (u.password ?? "").trim() === cleanPass,
   );
   if (!user) return { success: false, message: "Email atau password salah!" };
 

@@ -23,7 +23,10 @@ export default function AdminLoginPage() {
     const ADMIN_USERNAME = "adminmuarabaru";
     const ADMIN_PASSWORD = "Admin1234";
 
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    const cleanUsername = username.trim();
+    const cleanPassword = password.trim();
+
+    if (cleanUsername === ADMIN_USERNAME && cleanPassword === ADMIN_PASSWORD) {
       sessionStorage.setItem("adminAuth", "true");
       setAlertModal({
         show: true,
